@@ -244,6 +244,246 @@
     @media (prefers-reduced-motion:reduce){
       *,*::before,*::after{animation:none!important;transition:none!important}
     }
+
+
+    /* ===== CRYSTAL SQUISH WATERDROPS ===== */
+    :root{
+      --crystal-pink:rgba(255,209,229,.42);
+      --crystal-yellow:rgba(255,239,174,.38);
+      --crystal-blue:rgba(199,229,255,.34);
+      --crystal-lilac:rgba(220,205,255,.34);
+      --crystal-mint:rgba(204,245,232,.30);
+    }
+    body{
+      background:
+        radial-gradient(circle at 12% 10%,rgba(255,228,239,.22),transparent 24%),
+        radial-gradient(circle at 88% 15%,rgba(255,244,198,.20),transparent 26%),
+        radial-gradient(circle at 76% 88%,rgba(211,235,255,.17),transparent 28%),
+        linear-gradient(180deg,#fff 0%,#fffefe 100%);
+    }
+    .wrap{padding:24px}
+    .grid{gap:14px 16px;perspective:1100px}
+    .card{
+      --px:50%;--py:35%;--push-x:0px;--push-y:0px;--squish-x:1;--squish-y:1;--lift:0px;--tilt:0deg;--base-rot:0deg;--ambient-rot:0deg;--aqua-shift:0%;
+      min-height:204px;
+      overflow:visible;
+      transform:translate3d(var(--push-x),calc(var(--push-y) + var(--lift)),0) rotate(calc(var(--base-rot) + var(--ambient-rot) + var(--tilt))) scaleX(var(--squish-x)) scaleY(var(--squish-y));
+      transform-origin:center;
+      border:1px solid rgba(255,255,255,.93);
+      background:
+        radial-gradient(circle at var(--px) var(--py),rgba(255,255,255,.96),rgba(255,255,255,.42) 23%,transparent 42%),
+        linear-gradient(145deg,rgba(255,255,255,.68),rgba(255,255,255,.30)),
+        linear-gradient(135deg,var(--crystal-pink),var(--crystal-blue) 48%,var(--crystal-mint));
+      backdrop-filter:blur(20px) saturate(1.25);
+      -webkit-backdrop-filter:blur(20px) saturate(1.25);
+      box-shadow:
+        inset 1px 1px 1px rgba(255,255,255,.96),
+        inset -10px -12px 24px rgba(166,200,235,.08),
+        0 16px 44px rgba(94,79,130,.10),
+        0 2px 9px rgba(119,132,170,.05);
+      transition:box-shadow .34s ease,border-color .34s ease,filter .34s ease;
+      will-change:transform;
+      isolation:isolate;
+    }
+    .card.soft{background:
+      radial-gradient(circle at var(--px) var(--py),rgba(255,255,255,.98),rgba(255,255,255,.38) 24%,transparent 43%),
+      linear-gradient(145deg,rgba(255,255,255,.66),rgba(255,255,255,.28)),
+      linear-gradient(135deg,rgba(255,211,231,.42),rgba(220,231,255,.30) 52%,rgba(238,220,255,.28));}
+    .card.cool{background:
+      radial-gradient(circle at var(--px) var(--py),rgba(255,255,255,.98),rgba(255,255,255,.38) 24%,transparent 43%),
+      linear-gradient(145deg,rgba(255,255,255,.66),rgba(255,255,255,.28)),
+      linear-gradient(135deg,rgba(205,232,255,.40),rgba(235,225,255,.28) 55%,rgba(214,246,239,.26));}
+    .card.mint{background:
+      radial-gradient(circle at var(--px) var(--py),rgba(255,255,255,.98),rgba(255,255,255,.38) 24%,transparent 43%),
+      linear-gradient(145deg,rgba(255,255,255,.66),rgba(255,255,255,.28)),
+      linear-gradient(135deg,rgba(217,249,239,.38),rgba(214,233,255,.29) 56%,rgba(245,222,255,.27));}
+
+    /* 서로 다른 투명 물방울 실루엣 */
+    .card:nth-child(13n+1){border-radius:44% 56% 53% 47% / 52% 44% 56% 48%}
+    .card:nth-child(13n+2){border-radius:46% 54% 43% 57% / 58% 46% 54% 42%}
+    .card:nth-child(13n+3){border-radius:58% 42% 52% 48% / 45% 57% 43% 55%}
+    .card:nth-child(13n+4){border-radius:42% 58% 59% 41% / 55% 47% 53% 45%}
+    .card:nth-child(13n+5){border-radius:53% 47% 43% 57% / 45% 54% 46% 55%}
+    .card:nth-child(13n+6){border-radius:47% 53% 56% 44% / 59% 43% 57% 41%}
+    .card:nth-child(13n+7){border-radius:61% 39% 49% 51% / 46% 58% 42% 54%}
+    .card:nth-child(13n+8){border-radius:45% 55% 60% 40% / 53% 45% 55% 47%}
+    .card:nth-child(13n+9){border-radius:55% 45% 43% 57% / 60% 44% 56% 40%}
+    .card:nth-child(13n+10){border-radius:49% 51% 58% 42% / 44% 59% 41% 56%}
+    .card:nth-child(13n+11){border-radius:60% 40% 54% 46% / 48% 55% 45% 52%}
+    .card:nth-child(13n+12){border-radius:43% 57% 47% 53% / 57% 43% 59% 41%}
+    .card:nth-child(13n+13){border-radius:54% 46% 57% 43% / 42% 56% 44% 58%}
+
+    .card::before{
+      inset:-4px;
+      background:conic-gradient(from 210deg,transparent,rgba(255,210,230,.48),rgba(255,242,179,.52),rgba(209,233,255,.50),rgba(232,216,255,.44),transparent);
+      filter:blur(17px);
+      opacity:0;
+    }
+    .card::after{
+      background:
+        radial-gradient(circle at 27% 18%,rgba(255,255,255,.98),transparent 16%),
+        radial-gradient(circle at 74% 78%,rgba(199,225,255,.22),transparent 31%),
+        linear-gradient(135deg,rgba(255,255,255,.20),transparent 42%);
+      opacity:.84;
+      border-radius:inherit;
+    }
+    .card.is-near,.card:hover,.card:focus-visible{
+      border-color:rgba(255,255,255,1);
+      box-shadow:
+        inset 1px 1px 1px rgba(255,255,255,1),
+        inset -10px -12px 26px rgba(165,199,235,.10),
+        0 22px 58px rgba(104,85,145,.14),
+        0 0 34px rgba(255,231,177,.13);
+      filter:saturate(1.04) brightness(1.015);
+    }
+    .card:hover::before,.card:focus-visible::before,.card.is-near::before{opacity:.72}
+    .card .halo{opacity:.42;transition:opacity .3s ease,transform .45s ease,filter .45s ease}
+    .card:hover .halo,.card:focus-visible .halo,.card.is-near .halo{opacity:.92;transform:translate(-50%,-50%) scale(1.23);filter:blur(4px)}
+    .card .icon{transition:transform .45s cubic-bezier(.2,.9,.25,1),box-shadow .35s ease,filter .35s ease}
+    .card:hover .icon,.card:focus-visible .icon,.card.is-near .icon{transform:translateY(-4px) scale(1.025);filter:brightness(1.04);box-shadow:inset 0 1px 1px rgba(255,255,255,.98),0 15px 30px rgba(113,91,145,.13)}
+    .card .arrow{transition:transform .32s ease,opacity .3s ease;opacity:.72}
+    .card:hover .arrow,.card:focus-visible .arrow{transform:translate(2px,-1px);opacity:1}
+
+
+    /* ===== AQUA CRYSTAL SKIN · reference-image inspired ===== */
+    .card{
+      border:1px solid rgba(151,211,240,.42);
+      background:
+        radial-gradient(ellipse at calc(var(--px) + 2%) calc(var(--py) - 2%),rgba(255,255,255,.96) 0 7%,rgba(255,255,255,.48) 17%,transparent 38%),
+        radial-gradient(ellipse at 18% 78%,rgba(78,236,246,.26) 0 4%,rgba(115,226,255,.15) 14%,transparent 33%),
+        radial-gradient(ellipse at 82% 22%,rgba(106,202,255,.24) 0 4%,rgba(191,227,255,.10) 18%,transparent 36%),
+        linear-gradient(145deg,rgba(255,255,255,.54),rgba(246,252,255,.19) 44%,rgba(220,244,255,.15) 68%,rgba(255,255,255,.32));
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.70),
+        inset 7px 9px 18px rgba(255,255,255,.38),
+        inset -11px -14px 24px rgba(38,181,235,.16),
+        inset 0 -4px 12px rgba(55,237,235,.12),
+        0 13px 32px rgba(63,153,206,.10),
+        0 2px 8px rgba(92,111,170,.05);
+      backdrop-filter:blur(17px) saturate(1.18);
+      -webkit-backdrop-filter:blur(17px) saturate(1.18);
+    }
+    .card.soft,.card.cool,.card.mint{
+      background:
+        radial-gradient(ellipse at calc(var(--px) + 2%) calc(var(--py) - 2%),rgba(255,255,255,.97) 0 7%,rgba(255,255,255,.46) 18%,transparent 39%),
+        radial-gradient(ellipse at 17% 79%,rgba(48,236,239,.27) 0 4%,rgba(93,224,255,.14) 14%,transparent 34%),
+        radial-gradient(ellipse at 83% 21%,rgba(91,197,255,.24) 0 5%,rgba(187,225,255,.10) 18%,transparent 36%),
+        radial-gradient(circle at 53% 47%,rgba(255,218,234,.08),transparent 29%),
+        linear-gradient(145deg,rgba(255,255,255,.56),rgba(247,252,255,.18) 44%,rgba(220,244,255,.14) 68%,rgba(255,255,255,.31));
+    }
+    .card::after{
+      background:
+        radial-gradient(ellipse at 30% 14%,rgba(255,255,255,.98) 0 4%,rgba(255,255,255,.54) 8%,transparent 19%),
+        radial-gradient(ellipse at 13% 67%,rgba(72,246,244,.23),transparent 18%),
+        radial-gradient(ellipse at 86% 42%,rgba(69,184,248,.19),transparent 20%),
+        linear-gradient(115deg,rgba(255,255,255,.25),transparent 36%,rgba(119,216,255,.08) 74%,transparent);
+      opacity:.92;
+      mix-blend-mode:screen;
+    }
+    .card::before{
+      inset:-5px;
+      background:conic-gradient(from 205deg,
+        transparent 0 12%,
+        rgba(66,234,245,.30) 18%,
+        rgba(91,190,255,.35) 29%,
+        rgba(255,218,235,.20) 45%,
+        rgba(255,240,174,.18) 56%,
+        rgba(86,230,244,.28) 70%,
+        rgba(107,191,255,.34) 82%,
+        transparent 94%);
+      filter:blur(12px);
+      opacity:.34;
+    }
+    .card.is-near,.card:hover,.card:focus-visible{
+      border-color:rgba(117,211,245,.66);
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.82),
+        inset 8px 10px 20px rgba(255,255,255,.44),
+        inset -13px -15px 27px rgba(28,174,232,.21),
+        inset 0 -5px 15px rgba(50,238,236,.17),
+        0 18px 46px rgba(57,147,208,.14),
+        0 0 32px rgba(116,226,255,.12),
+        0 0 42px rgba(255,221,234,.08);
+      filter:saturate(1.06) brightness(1.025);
+    }
+    .card:hover::before,.card:focus-visible::before,.card.is-near::before{opacity:.62}
+
+    /* 각 물방울마다 아주 조금씩 다른 자세 */
+    .card:nth-child(13n+1){--base-rot:-2.4deg}
+    .card:nth-child(13n+2){--base-rot:1.6deg}
+    .card:nth-child(13n+3){--base-rot:-1.1deg}
+    .card:nth-child(13n+4){--base-rot:2.7deg}
+    .card:nth-child(13n+5){--base-rot:-1.8deg}
+    .card:nth-child(13n+6){--base-rot:.9deg}
+    .card:nth-child(13n+7){--base-rot:2.1deg}
+    .card:nth-child(13n+8){--base-rot:-2.9deg}
+    .card:nth-child(13n+9){--base-rot:1.2deg}
+    .card:nth-child(13n+10){--base-rot:-.7deg}
+    .card:nth-child(13n+11){--base-rot:2.5deg}
+    .card:nth-child(13n+12){--base-rot:-1.5deg}
+    .card:nth-child(13n+13){--base-rot:.6deg}
+
+    /* 내부 아이콘도 유리 속에 떠 있는 느낌 */
+    .icon{
+      background:
+        radial-gradient(circle at 31% 24%,rgba(255,255,255,.96),rgba(255,255,255,.42) 21%,transparent 43%),
+        linear-gradient(145deg,rgba(255,255,255,.46),rgba(193,235,255,.20)),
+        linear-gradient(135deg,rgba(121,220,255,.26),rgba(255,215,233,.18) 56%,rgba(255,239,174,.18));
+      border-color:rgba(170,225,248,.50);
+      color:#f9fbff;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.72),inset -5px -7px 15px rgba(55,182,236,.12),0 9px 24px rgba(68,153,203,.10);
+    }
+
+    /* 초미세 광입자 */
+    .micro-spark{
+      position:fixed;z-index:21000;pointer-events:none;user-select:none;
+      left:0;top:0;font-size:var(--fs,8px);line-height:1;color:var(--c,#fff);
+      filter:drop-shadow(0 0 6px rgba(255,255,255,.95));
+      opacity:0;will-change:transform,opacity;
+      animation:microSpread var(--dur,1.4s) cubic-bezier(.17,.72,.24,1) forwards;
+    }
+    @keyframes microSpread{
+      0%{opacity:0;transform:translate(0,0) scale(.25) rotate(0deg)}
+      18%{opacity:.95;transform:translate(calc(var(--dx)*.18),calc(var(--dy)*.18)) scale(1.05) rotate(8deg)}
+      72%{opacity:.68}
+      100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.45) rotate(var(--rot,80deg))}
+    }
+    .mist-glint{
+      position:fixed;z-index:20999;pointer-events:none;border-radius:50%;
+      width:var(--sz,8px);height:var(--sz,8px);left:0;top:0;
+      background:radial-gradient(circle,rgba(255,255,255,.98) 0 20%,rgba(255,241,193,.46) 42%,rgba(198,224,255,.18) 66%,transparent 72%);
+      filter:blur(.2px);opacity:0;animation:glintDrift var(--dur,1.55s) ease-out forwards;
+    }
+    @keyframes glintDrift{0%{opacity:0;transform:translate(0,0) scale(.2)}18%{opacity:.92}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.65)}}
+
+    /* 클릭 전환: 폭죽이 아니라 빛의 막이 열리는 느낌 */
+    .quest-transition{position:fixed;inset:0;z-index:30000;pointer-events:none;opacity:0;visibility:hidden;overflow:hidden;background:transparent}
+    .quest-transition::before{
+      content:"";position:absolute;left:50%;top:50%;width:18vmax;height:18vmax;border-radius:50%;
+      background:radial-gradient(circle,rgba(255,255,255,.98) 0 8%,rgba(255,228,241,.78) 20%,rgba(255,243,182,.52) 34%,rgba(204,229,255,.42) 50%,rgba(228,215,255,.26) 63%,transparent 74%);
+      transform:translate(-50%,-50%) scale(.04);filter:blur(1px);
+    }
+    .quest-transition.show{visibility:visible;animation:veilFade .92s ease forwards}
+    .quest-transition.show::before{animation:veilBloom .92s cubic-bezier(.08,.68,.13,1) forwards}
+    @keyframes veilFade{0%{opacity:0}12%{opacity:1}78%{opacity:1}100%{opacity:0}}
+    @keyframes veilBloom{0%{transform:translate(-50%,-50%) scale(.04);opacity:.4}30%{transform:translate(-50%,-50%) scale(1.5);opacity:1}75%{transform:translate(-50%,-50%) scale(8.2);opacity:.82}100%{transform:translate(-50%,-50%) scale(12);opacity:0}}
+    .quest-core{position:absolute;left:50%;top:50%;width:18px;height:18px;margin:-9px;border-radius:50%;background:#fff;box-shadow:0 0 18px #fff,0 0 44px rgba(255,204,229,.90),0 0 82px rgba(255,235,165,.72),0 0 122px rgba(195,223,255,.58);opacity:0}
+    .quest-transition.show .quest-core{animation:corePulse .82s ease-out forwards}
+    @keyframes corePulse{0%{opacity:0;transform:scale(.2)}28%{opacity:1;transform:scale(1.6)}100%{opacity:0;transform:scale(7)}}
+    .quest-ring{position:absolute;left:50%;top:50%;width:76px;height:76px;margin:-38px;border-radius:50%;border:1px solid rgba(255,255,255,.92);box-shadow:0 0 24px rgba(255,220,238,.56),inset 0 0 18px rgba(255,247,206,.38);opacity:0}
+    .quest-transition.show .quest-ring.r1{animation:ringDream .78s .04s ease-out forwards}.quest-transition.show .quest-ring.r2{animation:ringDream .9s .12s ease-out forwards}
+    @keyframes ringDream{0%{opacity:0;transform:scale(.2)}22%{opacity:.95}100%{opacity:0;transform:scale(11)}}
+    .quest-label{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.86);padding:7px 13px;border-radius:999px;background:rgba(255,255,255,.58);border:1px solid rgba(255,255,255,.90);font-weight:850;font-size:10px;letter-spacing:.16em;color:#8d7584;white-space:nowrap;opacity:0;backdrop-filter:blur(10px)}
+    .quest-transition.show .quest-label{animation:labelDream .78s .10s ease forwards}
+    @keyframes labelDream{0%{opacity:0;transform:translate(-50%,-48%) scale(.78)}32%{opacity:.92;transform:translate(-50%,-50%) scale(1)}72%{opacity:.7}100%{opacity:0;transform:translate(-50%,-56%) scale(1.02)}}
+    .quest-bit{position:absolute;left:50%;top:50%;font-size:var(--fs,9px);opacity:0;filter:drop-shadow(0 0 6px rgba(255,255,255,.95))}
+    .quest-transition.show .quest-bit{animation:questDust 1s var(--delay,0s) cubic-bezier(.14,.72,.18,1) forwards}
+    @keyframes questDust{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}20%{opacity:.95}100%{opacity:0;transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y))) scale(.52) rotate(var(--r))}}
+
+    @media(max-width:720px){
+      .wrap{padding:14px}.grid{gap:10px}.card{overflow:hidden;border-radius:28px!important;min-height:174px;transform:none!important}.wide{grid-column:span 2}.tall{min-height:200px}
+    }
+
   </style>
 </head>
 <body>
@@ -361,7 +601,7 @@
 
 
 
-      <a class="card wide cool" data-key="training" href="TOYU_training_report_direct.html">
+      <a class="card wide cool" data-key="training" href="https://memo1004.vercel.app/">
         <span class="arrow">↗</span>
         <span class="halo"></span>
         <span class="icon">記</span>
@@ -383,9 +623,14 @@
     </section>
   </main>
 
+  <div class="quest-transition" id="questTransition" aria-hidden="true">
+    <div class="quest-ring r1"></div><div class="quest-ring r2"></div>
+    <div class="quest-core"></div><div class="quest-label">✦ QUEST CLEAR ✦</div>
+  </div>
+
   <script>
     const LINKS = {
-      breakfast: "#",
+      breakfast: "TOYU_breakfast_reading.html",
       extra: "#",
       laundry: "#",
       toyu: "#",
@@ -396,43 +641,159 @@
       opening: "#",
       english: "#",
       sales: "#",
-      training: "TOYU_training_report_direct.html",
+      training: "https://memo1004.vercel.app/",
       notice: "#"
     };
 
-    document.querySelectorAll(".card").forEach(card=>{
-      const key = card.dataset.key;
-      if (LINKS[key]) card.href = LINKS[key];
 
-      card.addEventListener("pointerdown", e=>{
-        card.classList.add("touching");
-        const rect = card.getBoundingClientRect();
-        const size = Math.max(rect.width, rect.height) * .55;
+    const quest = document.getElementById('questTransition');
+    const cards = [...document.querySelectorAll('.card')];
+    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let raf = 0;
+    let pointer = {x:-9999,y:-9999};
 
-        const ripple = document.createElement("span");
-        ripple.className = "ripple";
-        ripple.style.width = ripple.style.height = size + "px";
-        ripple.style.left = (e.clientX - rect.left - size/2) + "px";
-        ripple.style.top = (e.clientY - rect.top - size/2) + "px";
-        card.appendChild(ripple);
-        setTimeout(()=>ripple.remove(), 900);
+    const SYMBOLS = ['✦','✧','⋆','♡','☾','·'];
+    const COLORS = ['#f4bfd4','#f5d98f','#c9dffd','#d9c9f7','#ffffff'];
 
-        for(let i=0;i<11;i++){
-          const s = document.createElement("i");
-          s.className = "spark";
-          s.style.left = e.clientX + "px";
-          s.style.top = e.clientY + "px";
-          const a = Math.random() * Math.PI * 2;
-          const d = 26 + Math.random() * 56;
-          s.style.setProperty("--dx", (Math.cos(a) * d) + "px");
-          s.style.setProperty("--dy", (Math.sin(a) * d) + "px");
-          document.body.appendChild(s);
-          setTimeout(()=>s.remove(), 760);
+    function emitDreamDust(x,y,power=1){
+      if(reduceMotion) return;
+      const count = power > 1 ? 28 : 13;
+      for(let i=0;i<count;i++){
+        const angle = Math.random()*Math.PI*2;
+        const dist = (power>1?80:52)+Math.random()*(power>1?220:120);
+        const dx = Math.cos(angle)*dist;
+        const dy = Math.sin(angle)*dist - (power>1?26:12);
+        if(i%4===0){
+          const g=document.createElement('i');
+          g.className='mist-glint';
+          g.style.left=x+'px';g.style.top=y+'px';
+          g.style.setProperty('--dx',dx+'px');g.style.setProperty('--dy',dy+'px');
+          g.style.setProperty('--sz',(3+Math.random()*6)+'px');
+          g.style.setProperty('--dur',(1.15+Math.random()*.7)+'s');
+          document.body.appendChild(g);setTimeout(()=>g.remove(),2000);
+        }else{
+          const n=document.createElement('span');
+          n.className='micro-spark';
+          n.textContent=SYMBOLS[(Math.random()*SYMBOLS.length)|0];
+          n.style.left=x+'px';n.style.top=y+'px';
+          n.style.color=COLORS[(Math.random()*COLORS.length)|0];
+          n.style.setProperty('--dx',dx+'px');n.style.setProperty('--dy',dy+'px');
+          n.style.setProperty('--rot',(-90+Math.random()*180)+'deg');
+          n.style.setProperty('--fs',((power>1?7:5)+Math.random()*(power>1?6:4))+'px');
+          n.style.setProperty('--dur',(1.05+Math.random()*.75)+'s');
+          document.body.appendChild(n);setTimeout(()=>n.remove(),2000);
         }
-      });
+      }
+    }
 
-      ["pointerup","pointercancel","pointerleave"].forEach(ev=>{
-        card.addEventListener(ev, ()=>setTimeout(()=>card.classList.remove("touching"), 120));
+    function questBurst(){
+      if(reduceMotion) return;
+      quest.querySelectorAll('.quest-bit').forEach(n=>n.remove());
+      for(let i=0;i<34;i++){
+        const n=document.createElement('span');
+        n.className='quest-bit';n.textContent=SYMBOLS[(Math.random()*SYMBOLS.length)|0];
+        const a=Math.random()*Math.PI*2,d=120+Math.random()*320;
+        n.style.setProperty('--x',(Math.cos(a)*d)+'px');
+        n.style.setProperty('--y',(Math.sin(a)*d)+'px');
+        n.style.setProperty('--r',(-120+Math.random()*240)+'deg');
+        n.style.setProperty('--fs',(6+Math.random()*8)+'px');
+        n.style.setProperty('--delay',(Math.random()*.12)+'s');
+        n.style.color=COLORS[i%COLORS.length];quest.appendChild(n);
+      }
+      quest.classList.remove('show');void quest.offsetWidth;quest.classList.add('show');
+    }
+
+    function nearestResponse(){
+      raf=0;
+      const near=[];
+      for(const card of cards){
+        const r=card.getBoundingClientRect();
+        const cx=r.left+r.width/2, cy=r.top+r.height/2;
+        const dx=cx-pointer.x,dy=cy-pointer.y,dist=Math.hypot(dx,dy);
+        const influence=Math.max(0,1-dist/260);
+        if(influence>0){
+          near.push({card,r,cx,cy,dist,influence});
+          const mx=(pointer.x-r.left)/r.width*100,my=(pointer.y-r.top)/r.height*100;
+          card.style.setProperty('--px',Math.max(5,Math.min(95,mx))+'%');
+          card.style.setProperty('--py',Math.max(5,Math.min(95,my))+'%');
+          card.classList.add('is-near');
+        }else card.classList.remove('is-near');
+      }
+      // 근접 물방울끼리 서로 살짝 밀어내며 튕기는 느낌
+      const pushes=new Map(cards.map(c=>[c,{x:0,y:0}]));
+      for(let i=0;i<near.length;i++) for(let j=i+1;j<near.length;j++){
+        const a=near[i],b=near[j];
+        const dx=b.cx-a.cx,dy=b.cy-a.cy,d=Math.hypot(dx,dy)||1;
+        const threshold=(Math.min(a.r.width,a.r.height)+Math.min(b.r.width,b.r.height))*.34;
+        if(d<threshold+34){
+          const f=(threshold+34-d)/(threshold+34)*5.2;
+          const ux=dx/d,uy=dy/d;
+          pushes.get(a.card).x-=ux*f;pushes.get(a.card).y-=uy*f;
+          pushes.get(b.card).x+=ux*f;pushes.get(b.card).y+=uy*f;
+        }
+      }
+      for(const card of cards){
+        const p=pushes.get(card);const r=card.getBoundingClientRect();
+        const inside=pointer.x>=r.left&&pointer.x<=r.right&&pointer.y>=r.top&&pointer.y<=r.bottom;
+        if(inside){
+          const nx=(pointer.x-(r.left+r.width/2))/(r.width/2);
+          const ny=(pointer.y-(r.top+r.height/2))/(r.height/2);
+          card.style.setProperty('--squish-x',(1.025-Math.abs(ny)*.018).toFixed(3));
+          card.style.setProperty('--squish-y',(0.985+Math.abs(nx)*.012).toFixed(3));
+          card.style.setProperty('--lift','-5px');
+          card.style.setProperty('--tilt',(nx*1.05-ny*.22)+'deg');
+        }else{
+          card.style.setProperty('--squish-x','1');card.style.setProperty('--squish-y','1');card.style.setProperty('--lift','0px');card.style.setProperty('--tilt','0deg');
+        }
+        card.style.setProperty('--push-x',p.x.toFixed(2)+'px');card.style.setProperty('--push-y',p.y.toFixed(2)+'px');
+      }
+    }
+    function queuePhysics(){if(!raf)raf=requestAnimationFrame(nearestResponse)}
+    addEventListener('pointermove',e=>{pointer={x:e.clientX,y:e.clientY};queuePhysics()},{passive:true});
+    addEventListener('pointerleave',()=>{pointer={x:-9999,y:-9999};queuePhysics()});
+    addEventListener('resize',queuePhysics,{passive:true});
+
+
+    // 버튼마다 서로 다른 위상으로 아주 천천히 회전/복원하며 젤처럼 살아있게 함.
+    if(!reduceMotion){
+      const phase=cards.map((_,i)=>({
+        p:i*.73+Math.random()*.35,
+        speed:.00062+((i%5)*.000045),
+        amp:.32+(i%4)*.08
+      }));
+      const ambientTick=(t)=>{
+        cards.forEach((card,i)=>{
+          const a=phase[i];
+          const rot=Math.sin(t*a.speed+a.p)*a.amp;
+          card.style.setProperty('--ambient-rot',rot.toFixed(3)+'deg');
+        });
+        requestAnimationFrame(ambientTick);
+      };
+      requestAnimationFrame(ambientTick);
+    }
+
+    cards.forEach(card=>{
+      const key=card.dataset.key;if(LINKS[key])card.href=LINKS[key];
+      let lastDust=0;
+      card.addEventListener('pointerenter',()=>{
+        const now=performance.now();if(now-lastDust<420)return;lastDust=now;
+        const r=card.getBoundingClientRect();emitDreamDust(r.left+r.width/2,r.top+r.height*.38,1);
+      });
+      card.addEventListener('pointerdown',()=>{
+        if(reduceMotion)return;
+        card.animate([
+          {transform:getComputedStyle(card).transform},
+          {transform:'translate3d(0,2px,0) scaleX(1.045) scaleY(.945)'},
+          {transform:'translate3d(0,-2px,0) scaleX(.985) scaleY(1.025)'},
+          {transform:'translate3d(0,0,0) scale(1)'}
+        ],{duration:360,easing:'cubic-bezier(.2,.8,.2,1)'});
+      });
+      card.addEventListener('click',e=>{
+        const href=card.getAttribute('href');if(!href||href==='#')return;
+        e.preventDefault();const r=card.getBoundingClientRect();
+        emitDreamDust(r.left+r.width/2,r.top+r.height/2,2);questBurst();
+        const delay=reduceMotion?80:760;
+        setTimeout(()=>{window.location.href=href},delay);
       });
     });
   </script>
