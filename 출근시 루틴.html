@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#ffffff" />
+<title>TOYU 아침 조식 오픈 업무 루틴</title>
+<style>
+  :root{
+    --bg:#f6f7f9;
+    --card:#ffffff;
+    --text:#111318;
+    --muted:#6f7682;
+    --line:#e7e9ee;
+    --soft:#f0f2f5;
+    --accent:#111318;
+    --warn:#fff4e5;
+    --danger:#fff0f0;
+    --green:#eef9f0;
+    --shadow:0 8px 24px rgba(17,19,24,.06);
+    --radius:20px;
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family: Pretendard, "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.55;
+    letter-spacing:-.02em;
+  }
+  button,input{font:inherit}
+  .wrap{max-width:980px;margin:0 auto;padding:18px 16px 80px}
+
+  .hero{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:24px;
+    padding:22px;
+    box-shadow:var(--shadow);
+    position:sticky;
+    top:8px;
+    z-index:20;
+    margin-bottom:18px;
+  }
+  .hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+  .hero h1{margin:0;font-size:clamp(22px,4.8vw,34px);line-height:1.22}
+  .hero p{margin:7px 0 0;color:var(--muted);font-size:14px}
+  .reset{
+    border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 12px;
+    font-weight:800;cursor:pointer;white-space:nowrap
+  }
+  .progress-row{display:flex;align-items:center;gap:12px;margin-top:16px}
+  .progress{
+    height:12px;background:var(--soft);border-radius:999px;overflow:hidden;flex:1
+  }
+  .bar{height:100%;width:0%;background:#111318;transition:.2s ease}
+  .pct{font-weight:900;min-width:45px;text-align:right}
+  .quick{
+    display:flex;gap:8px;overflow-x:auto;padding-top:14px;scrollbar-width:none
+  }
+  .quick::-webkit-scrollbar{display:none}
+  .quick a{
+    text-decoration:none;color:var(--text);background:var(--soft);border-radius:999px;
+    padding:8px 12px;font-size:13px;font-weight:800;white-space:nowrap
+  }
+
+  .section{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:20px;
+    margin:14px 0;
+    box-shadow:var(--shadow);
+    scroll-margin-top:170px;
+  }
+  .section h2{
+    margin:0 0 14px;
+    font-size:21px;
+    line-height:1.3;
+  }
+  .section h3{
+    margin:18px 0 10px;
+    font-size:16px;
+  }
+  .section p.note{
+    background:var(--soft);
+    border-radius:14px;
+    padding:12px 14px;
+    margin:10px 0 14px;
+    font-weight:700;
+  }
+  .important{background:var(--danger)}
+  .warm{background:var(--warn)}
+  .green{background:var(--green)}
+  .checks{display:grid;gap:8px}
+  label.item{
+    display:flex;align-items:flex-start;gap:11px;
+    padding:11px 12px;border:1px solid var(--line);border-radius:14px;
+    background:#fff;cursor:pointer;transition:.15s ease;
+  }
+  label.item:hover{background:#fafafa}
+  label.item.done{background:#f1f2f4;color:#838995}
+  label.item.done .txt{text-decoration:line-through}
+  input[type="checkbox"]{
+    width:21px;height:21px;min-width:21px;margin-top:1px;
+    accent-color:#111318;
+  }
+  .txt{font-size:15px}
+  .txt strong{font-weight:900}
+  .sub{
+    margin:12px 0 6px;
+    font-size:13px;font-weight:900;color:#505763;
+    text-transform:none;
+  }
+  .order{
+    border:2px solid #111318;
+    border-radius:16px;
+    padding:13px 14px;
+    font-weight:900;
+    font-size:15px;
+    background:#fff;
+    margin-top:10px;
+  }
+  .final{
+    background:#111318;color:#fff;border:none;
+  }
+  .final .order{
+    border-color:#fff;background:#1a1d22;color:#fff;
+  }
+  .final label.item{
+    background:#171a1f;border-color:#2b2f36;color:#fff;
+  }
+  .final label.item.done{opacity:.55}
+  .mini-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px
+  }
+  .timebox{
+    border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center;font-weight:900
+  }
+  .floating-top{
+    position:fixed;right:16px;bottom:18px;width:48px;height:48px;border-radius:50%;
+    border:0;background:#111318;color:#fff;font-size:20px;box-shadow:0 10px 28px rgba(0,0,0,.18);
+    cursor:pointer;z-index:30
+  }
+  .footer{color:var(--muted);font-size:12px;text-align:center;margin-top:26px}
+
+  @media (max-width:640px){
+    body{background:#fff}
+    .wrap{padding:10px 10px 70px}
+    .hero{
+      top:4px;border-radius:18px;padding:16px;margin-bottom:10px;
+      box-shadow:0 5px 18px rgba(0,0,0,.07)
+    }
+    .hero-top{align-items:center}
+    .hero p{display:none}
+    .reset{font-size:12px;padding:8px 10px}
+    .progress-row{margin-top:12px}
+    .quick{padding-top:10px}
+    .quick a{padding:7px 10px;font-size:12px}
+    .section{
+      border-radius:16px;padding:15px;margin:9px 0;box-shadow:none;
+      scroll-margin-top:150px;
+    }
+    .section h2{font-size:18px;margin-bottom:11px}
+    .section h3{font-size:15px;margin-top:15px}
+    .checks{gap:6px}
+    label.item{padding:9px 10px;border-radius:12px}
+    .txt{font-size:14px}
+    input[type="checkbox"]{width:20px;height:20px;min-width:20px}
+    .mini-grid{grid-template-columns:repeat(3,1fr)}
+    .timebox{padding:10px 4px;font-size:14px}
+    .order{font-size:14px;padding:11px 12px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero" id="top">
+    <div class="hero-top">
+      <div>
+        <h1>🌅 아침 조식 오픈 업무 루틴</h1>
+        <p>체크한 항목은 이 기기에 자동 저장됨</p>
+      </div>
+      <button class="reset" id="resetBtn">전체 초기화</button>
+    </div>
+    <div class="progress-row">
+      <div class="progress"><div class="bar" id="bar"></div></div>
+      <div class="pct" id="pct">0%</div>
+    </div>
+    <nav class="quick">
+      <a href="#open">건물 오픈</a>
+      <a href="#tea">블렌딩 티</a>
+      <a href="#list">조식 LIST</a>
+      <a href="#stay">연박</a>
+      <a href="#hall">홀</a>
+      <a href="#before">08:00 직전</a>
+      <a href="#guest">고객 입장</a>
+    </nav>
+  </header>
+
+  <section class="section" id="open">
+    <h2>① 건물 오픈</h2>
+    <div class="checks">
+      <label class="item"><input type="checkbox"><span class="txt"><strong>복도부터 지하까지 불 켜기</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>홀 외부 / 홀 내부 / 복도 음악 켜기</strong> — 복도 음악은 <strong>09:00 이후</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>프런트 / 외부 음악 켜기</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>레스토랑 전체 조명 켜기</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>룸스프레이 4층부터 뿌리기</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">시간 남으면 <strong>제습기 3개 확인</strong></span></label>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>🍵 ② 식당 기본 준비</h2>
+    <div class="checks">
+      <label class="item"><input type="checkbox"><span class="txt"><strong>블렌딩 티 만들기</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>얼음물 만들기</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>뜨거운 물 가열 시작 — 2곳</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">물병 / 물 세팅 확인</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">찻잔 준비</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">카트 준비</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">배터리 준비 및 연결</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">주방 POS 켜기</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">카운터 POS 켜기</span></label>
+    </div>
+  </section>
+
+  <section class="section" id="tea">
+    <h2>🍵 블렌딩 티 만드는 법</h2>
+    <h3>① 티 우리기</h3>
+    <div class="checks">
+      <label class="item"><input type="checkbox"><span class="txt">주전자에 <strong>티백 1개 넣기</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">기본은 <strong>티백 1개</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">조식 인원 <strong>20명 초과 시 상황에 따라 티백 2개 사용</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">정수기에서 <strong>정수</strong> 누르기</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">용량 <strong>1,500ml</strong> 선택해서 물 받기</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">주전자 <strong>POWER 켜기</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">주전자 올리기</span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>기능 → 시작</strong> 누르기</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">타이머 <strong>30분</strong> 맞추기</span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>30분 동안 충분히 우리기</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">다 우러나면 <strong>검정색 주전자 3곳에 나누어 옮겨 담기</strong></span></label>
+    </div>
+
+    <h3>💻 POS 켜기</h3>
+    <div class="checks">
+      <label class="item"><input type="checkbox"><span class="txt">컴퓨터 켜기</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">비밀번호 <strong>000</strong> 입력</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">POS 프로그램 정상 작동 확인</span></label>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>☕ ③ 아침 조식 오픈 세팅</h2>
+    <h3>찻잔 세팅</h3>
+    <div class="checks">
+      <label class="item"><input type="checkbox"><span class="txt">찻잔 전부 <strong>뒤집어서 세팅하기</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">찻잔 돌려 준비하기</span></label>
+    </div>
+
+    <h3>카트 세팅</h3>
+    <div class="checks">
+      <label class="item"><input type="checkbox"><span class="txt"><strong>배터리</strong> 카트에 싣기</span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>차가운 물 주전자</strong> 카트에 싣기</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">필요한 곳에 배터리 <strong>전부 꽂기</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">기기 <strong>하나씩 전부 켜기</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">카트와 물주전자 위치 확인</span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>샐러드 준비 및 수량 맞추기</strong></span></label>
+    </div>
+  </section>
+
+  <section class="section" id="list">
+    <h2>📋 ④ 조식 LIST 수량 확인</h2>
+    <div class="checks">
+      <label class="item"><input type="checkbox"><span class="txt">오늘 <strong>총 조식 인원</strong> 확인</span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>성인 수</strong> 확인</span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>어린이 수</strong> 확인</span></label>
+    </div>
+
+    <h3>메뉴별 수량 확인</h3>
+    <div class="checks">
+      <label class="item"><input type="checkbox"><span class="txt"><strong>톳밥 수량 확인</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">톳밥 수량에 맞춰 <strong>동치미 푸기</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>전복죽 수량 확인</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">필요한 <strong>반찬 수량만큼 미리 퍼놓기</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>어린이 메뉴 수량 확인</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>수프 수량 확인</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">수프 수량에 맞춰 <strong>접시 준비</strong></span></label>
+    </div>
+
+    <h3>객실별 조식시간 확인</h3>
+    <div class="mini-grid">
+      <div class="timebox">08:00</div>
+      <div class="timebox">08:30</div>
+      <div class="timebox">09:00</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>🥗 ⑤ 샐러드 준비</h2>
+    <div class="checks">
+      <label class="item"><input type="checkbox"><span class="txt"><strong>성인 조식 인원수만큼 샐러드 준비</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">샐러드 소스 담기</span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>톳밥 소스 담기</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>정사각 트레이 확인</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">토마토 등 샐러드 구성 확인</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">완성된 샐러드는 <strong>냉장 보관</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">어린이는 샐러드 대신 <strong>수프 대상인지 확인</strong></span></label>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>💻 ⑥ POS / 주방 기계 켜기</h2>
+    <div class="checks">
+      <label class="item"><input type="checkbox"><span class="txt"><strong>주방 POS 켜기</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>카운터 POS 켜기</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">테이블오더 정상 작동 확인</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">필요한 태블릿 상태 확인</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">태블릿 배터리 연결 확인</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">기기 하나씩 전부 켜기</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">주방으로 주문이 정상적으로 전달되는지 확인</span></label>
+    </div>
+  </section>
+
+  <section class="section" id="stay">
+    <h2>🧹 ⑦ 연박 객실 먼저 잡기 — 중요</h2>
+    <p class="note important">오늘 조식 먹으러 오는 <strong>연박 고객은 룸터치 여부를 반드시 물어봐야 하는 고객</strong>임.</p>
+    <div class="checks">
+      <label class="item"><input type="checkbox"><span class="txt">오늘 <strong>연박 객실 호실 전부 확인</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">조식 차트에서 연박 객실에 <strong>R 표시 확인</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">연박 고객별 <strong>조식시간 확인</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">해당 객실 <strong>메모 확인</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">메모 있는 객실은 놓치지 않도록 체크</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">기존 <strong>룸터치 관련 요청사항</strong> 있는지 확인</span></label>
+    </div>
+
+    <h3>조식 중 반드시 확인할 것</h3>
+    <div class="checks">
+      <label class="item"><input type="checkbox"><span class="txt">오늘 <strong>객실 청소(룸터치)를 원하는지 확인</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">오늘 <strong>외출 예정인지 확인</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">대략 <strong>몇 시에 외출하는지 확인</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">대략 <strong>몇 시에 돌아오는지 확인</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">청소가 필요 없는 경우 <strong>룸터치 미진행</strong>으로 기록</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">받은 내용은 <strong>해당 호실 메모에 즉시 기록</strong></span></label>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>📱 ⑧ 객실정비 관련 카톡 올리기</h2>
+    <div class="checks">
+      <label class="item"><input type="checkbox"><span class="txt">오늘 <strong>연박 객실 정리</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">객실정비 관련 기존 톡 확인</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">필요한 <strong>연박 / 룸터치 관련 내용 카톡에 공유</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">청소팀이 알아야 할 <strong>객실 특이사항 확인</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>추가 인원</strong> 관련 내용 확인</span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>추가 침구</strong> 관련 내용 확인</span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>추가 어메니티</strong> 관련 내용 확인</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">필요한 내용이 있으면 함께 공유</span></label>
+    </div>
+  </section>
+
+  <section class="section" id="hall">
+    <h2>🍽️ ⑨ 홀 오픈 세팅</h2>
+    <div class="checks">
+      <label class="item"><input type="checkbox"><span class="txt">테이블 상태 확인</span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>테이블 닦기</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">의자 상태 확인</span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>의자 닦기</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>레스토랑 창틀 닦기</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">컵 세팅</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">컵 / 찻잔은 필요한 방식대로 <strong>뒤집어서 세팅</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">물 세팅</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">차가운 물 주전자 세팅</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">테이블별 기본 세팅 확인</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">휴지 / 냅킨 등 부족한 것 채우기</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">고객 동선에 방해되는 물건 없는지 확인</span></label>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>🪑 ⑩ 오늘 조식 좌석 및 고객정보 머릿속에 넣기</h2>
+    <p class="note warm">조식 시작 전에 최소한 아래 내용은 알고 있어야 함.</p>
+    <div class="checks">
+      <label class="item"><input type="checkbox"><span class="txt"><strong>몇 호실이 오는지</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>몇 명인지</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>몇 시인지</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>무슨 메뉴인지</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>연박인지</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>룸터치를 물어봐야 하는 고객인지</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>메모가 있는 객실인지</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>현장 결제 관련 내용이 있는지</strong></span></label>
+    </div>
+    <div class="order">호실 → 예약자 → 박수 → 인원 → 조식 사용일 → 시간 → 메뉴 → 메모</div>
+  </section>
+
+  <section class="section" id="before">
+    <h2>⏰ ⑪ 08:00 조식 시작 직전 최종 확인</h2>
+    <div class="checks">
+      <label class="item"><input type="checkbox"><span class="txt">첫 타임 <strong>08:00 객실 확인</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">해당 객실 <strong>테이블 자리 확인</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">메뉴 수량 재확인</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">샐러드 준비 확인</span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>블렌딩 티 준비 확인</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>뜨거운 물 2곳 준비 확인</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>얼음물 준비 확인</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">주방과 첫 주문 수량 확인</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">연박 고객 <strong>R 표시 다시 확인</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">특이사항 있는 고객 확인</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">메모 있는 고객 확인</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">현장 결제 여부 확인</span></label>
+    </div>
+  </section>
+
+  <section class="section" id="guest">
+    <h2>🍵 고객 들어오면</h2>
+    <h3>1. 객실 확인</h3>
+    <div class="checks">
+      <label class="item"><input type="checkbox"><span class="txt">인사</span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>호실 확인</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">예약 인원과 실제 인원 확인</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">자리 안내</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">특이사항이 있으면 <strong>즉시 메모</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>현장 결제 여부 잘 메모해두기</strong></span></label>
+    </div>
+
+    <h3>2. 고객 착석 후</h3>
+    <div class="checks">
+      <label class="item"><input type="checkbox"><span class="txt"><strong>샐러드 바로 제공</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>시그니처 블렌딩 티 제공</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">곧 식사가 준비된다고 안내</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">필요한 물 / 컵 상태 확인</span></label>
+    </div>
+
+    <h3>🚨 3. 연박 고객이면</h3>
+    <p class="note important"><strong>R 표시된 객실인지 확인하고 룸터치 질문 절대 잊지 않기.</strong></p>
+    <div class="checks">
+      <label class="item"><input type="checkbox"><span class="txt">룸터치 희망 여부</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">외출 여부</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">외출 예정 시간</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">복귀 예상 시간</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">청소가 필요 없는 경우 <strong>룸터치 미진행 확인</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">답변 <strong>즉시 해당 호실 메모에 기록</strong></span></label>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>✅ 아침 오픈 때 반드시 켜거나 준비할 것 최종 체크</h2>
+    <div class="checks">
+      <label class="item"><input type="checkbox"><span class="txt"><strong>얼음물</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>뜨거운 물 2곳</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>블렌딩 티</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">찻잔 전부 뒤집어 세팅</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">카트 준비</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">배터리 전부 연결</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">차가운 물 주전자 세팅</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">기기 하나씩 전부 켜기</span></label>
+      <label class="item"><input type="checkbox"><span class="txt">샐러드 수량 맞추기</span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>주방 POS ON</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>카운터 POS ON</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">컴퓨터 ON → 비밀번호 <strong>000</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>홀 조명 ON</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>복도 조명 ON</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>지하까지 조명 ON</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>홀 내부 음악 ON</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>홀 외부 음악 ON</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>프런트 음악 ON</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>외부 음악 ON</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>복도 음악 ON — 09:00 이후</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt"><strong>룸스프레이 4층부터</strong></span></label>
+      <label class="item"><input type="checkbox"><span class="txt">시간 남으면 <strong>제습기 3개 확인</strong></span></label>
+    </div>
+  </section>
+
+  <section class="section final">
+    <h2>🔥 조식 시작 전에 절대 놓치면 안 되는 핵심</h2>
+    <div class="order">조식 수량 → 샐러드 → 티 → 물 → POS → 좌석 → 연박 R → 메모 → 룸터치</div>
+    <p><strong>특히 연박 고객 = 조식 중 룸터치 확인 대상</strong>으로 기억하기.</p>
+    <div class="order">호실 → 예약자 → 박수 → 인원 → 사용일 → 시간 → 메뉴 → 메모</div>
+    <p><strong>고객이 들어오면:</strong></p>
+    <div class="order">호실 확인 → 자리 안내 → 샐러드 → 블렌딩 티 → 연박이면 룸터치 확인 → 특이사항/현장결제 즉시 메모</div>
+  </section>
+
+  <div class="footer">TOYU Breakfast Opening Routine</div>
+</div>
+
+<button class="floating-top" aria-label="맨 위로" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+  const boxes = [...document.querySelectorAll('input[type="checkbox"]')];
+  const KEY = 'toyu_breakfast_open_v1';
+
+  function save(){
+    const states = boxes.map(b => b.checked);
+    localStorage.setItem(KEY, JSON.stringify(states));
+    render();
+  }
+
+  function load(){
+    try{
+      const states = JSON.parse(localStorage.getItem(KEY) || '[]');
+      boxes.forEach((b,i)=> b.checked = !!states[i]);
+    }catch(e){}
+    render();
+  }
+
+  function render(){
+    boxes.forEach(b => b.closest('.item')?.classList.toggle('done', b.checked));
+    const done = boxes.filter(b => b.checked).length;
+    const pct = boxes.length ? Math.round(done / boxes.length * 100) : 0;
+    document.getElementById('bar').style.width = pct + '%';
+    document.getElementById('pct').textContent = pct + '%';
+  }
+
+  boxes.forEach(b => b.addEventListener('change', save));
+
+  document.getElementById('resetBtn').addEventListener('click', ()=>{
+    if(confirm('오늘 체크한 내용을 전부 초기화할까요?')){
+      boxes.forEach(b => b.checked = false);
+      localStorage.removeItem(KEY);
+      render();
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+  });
+
+  load();
+</script>
+</body>
+</html>
