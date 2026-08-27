@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=0.75, user-scalable=yes">
-<title>조식 LIST</title>
+<title>TOYU 조식 리딩연습</title>
 
 <!-- 온라인에서는 실제 .xlsx 파일로 저장됨. -->
 <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
@@ -269,6 +269,46 @@ select{cursor:pointer}
   color:#496056;
   cursor:pointer;
 }
+
+.seat-memo-trigger.has-memo{
+  border-color:#dc5752;
+  background:#e83f3a;
+  color:#fff;
+  box-shadow:0 0 0 2px rgba(232,63,58,.12);
+}
+.roomtouch-reminder-badge{
+  display:inline-grid;
+  place-items:center;
+  min-width:22px;
+  height:22px;
+  margin-top:3px;
+  padding:0 6px;
+  border-radius:999px;
+  border:2px solid #d72f2a;
+  background:#fff;
+  color:#c9231f;
+  font-size:11px;
+  font-weight:1000;
+  line-height:1;
+  letter-spacing:-.02em;
+  box-shadow:0 2px 7px rgba(169,35,31,.12);
+}
+.stay-chart-note{
+  display:block;
+  margin-top:5px;
+  padding:5px 6px;
+  border:1px solid #e3c26a;
+  border-radius:7px;
+  background:#fff7d8;
+  color:#66531f;
+  font-size:9.5px;
+  font-weight:850;
+  line-height:1.4;
+  text-align:left;
+  white-space:normal;
+  word-break:keep-all;
+}
+.stay-chart-note b{color:#ad5a12}
 
 .room-memo-panel{
   max-width:980px;
@@ -1094,6 +1134,51 @@ html,body{touch-action:pan-x pan-y pinch-zoom;-webkit-text-size-adjust:100%}
 }
 </style>
 
+
+<!-- PC ↔ 모바일 실시간 동기화용 Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  .cloud-sync-bar{
+    display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+    margin:8px 0 4px;padding:9px 11px;border:1px solid #dde2df;
+    background:#f8faf8;border-radius:10px;font-size:11px;color:#66706a
+  }
+  .cloud-sync-dot{width:8px;height:8px;border-radius:50%;background:#aaa;flex:0 0 auto}
+  .cloud-sync-bar.online .cloud-sync-dot{background:#4f9d6b;box-shadow:0 0 0 3px rgba(79,157,107,.12)}
+  .cloud-sync-bar.syncing .cloud-sync-dot{background:#c99734;box-shadow:0 0 0 3px rgba(201,151,52,.12)}
+  .cloud-sync-bar.error .cloud-sync-dot{background:#c85a62;box-shadow:0 0 0 3px rgba(200,90,98,.12)}
+  .cloud-sync-title{font-weight:850;color:#3e4742}
+  .cloud-sync-spacer{flex:1}
+  .cloud-sync-btn{
+    appearance:none;border:1px solid #d5dad7;background:#fff;color:#56615a;
+    font:800 11px/1 "Pretendard","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",Arial,sans-serif;
+    padding:7px 9px;border-radius:8px;cursor:pointer
+  }
+  .cloud-sync-btn:hover{background:#f3f6f4}
+  .cloud-modal{position:fixed;inset:0;z-index:50000;display:none;place-items:center;padding:12px;background:rgba(25,30,27,.48);backdrop-filter:blur(5px)}
+  .cloud-modal.open{display:grid}
+  .cloud-dialog{width:min(680px,100%);max-height:92vh;overflow:auto;background:#fffdf9;border:1px solid #d6dad7;border-radius:18px;box-shadow:0 28px 90px rgba(20,28,23,.26)}
+  .cloud-head{padding:20px 22px 15px;border-bottom:1px solid #e1e4e2;background:linear-gradient(110deg,#edf6ef,#fff8df,#fff0f4)}
+  .cloud-head h3{margin:0 0 5px;font-size:18px;color:#333a36}
+  .cloud-head p{margin:0;font-size:11.5px;line-height:1.65;color:#6d756f}
+  .cloud-body{padding:18px 22px 22px}
+  .cloud-field{margin:0 0 12px}
+  .cloud-field label{display:block;margin-bottom:5px;font-size:11px;font-weight:850;color:#59635d}
+  .cloud-field input{width:100%;height:42px;border:1px solid #d7dbd8;border-radius:9px;padding:0 11px;font-size:13px;background:#fff}
+  .cloud-note{padding:11px 12px;border:1px solid #e6dfc6;background:#fff9e6;border-radius:9px;font-size:11px;line-height:1.65;color:#6a6250;margin:8px 0 14px}
+  .cloud-sql{width:100%;min-height:205px;resize:vertical;border:1px solid #dadddf;border-radius:9px;padding:11px;font:11px/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#f7f8f7;color:#3d4540}
+  .cloud-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:14px}
+  .cloud-actions button{border:1px solid #d5dad7;background:#fff;border-radius:9px;padding:9px 12px;font-weight:800;cursor:pointer;color:#535d57}
+  .cloud-actions .primary{background:#eaf4ed;border-color:#cadfd0;color:#31573d}
+  .cloud-actions .danger{background:#fff2f3;border-color:#ead0d3;color:#91454d}
+  @media(max-width:760px){
+    .cloud-sync-bar{font-size:10.5px}
+    .cloud-sync-spacer{display:none}
+    .cloud-sync-btn{margin-left:auto}
+    .cloud-head,.cloud-body{padding-left:15px;padding-right:15px}
+  }
+</style>
+
 </head>
 <body>
 <div class="wrap">
@@ -1156,7 +1241,7 @@ html,body{touch-action:pan-x pan-y pinch-zoom;-webkit-text-size-adjust:100%}
       <span><i class="legend-dot"></i>빈 자리</span>
       <span><i class="legend-dot used"></i>객실 배정</span>
       <span><i class="legend-dot dup"></i>중복 배정</span>
-      <span>💬 배정된 좌석을 누르면 객실별 메모 작성</span>
+      <span>💬 배정된 좌석을 누르면 객실별 메모 작성</span><span><b style="color:#c9231f">R</b> = 연박 · 오늘 룸터치 여부 확인</span>
     </div>
 
     <div class="room-memo-panel" id="roomMemoPanel">
@@ -1251,6 +1336,15 @@ html,body{touch-action:pan-x pan-y pinch-zoom;-webkit-text-size-adjust:100%}
     <button class="action danger" id="resetBtn">전체 초기화</button>
   </div>
   <div class="save-state" id="saveState">●  저장됨</div>
+
+  <div class="cloud-sync-bar" id="cloudSyncBar">
+    <span class="cloud-sync-dot"></span>
+    <span class="cloud-sync-title">기기 공유</span>
+    <span id="cloudSyncText">이 기기에 저장됨 · 실시간 공유 설정 전</span>
+    <span class="cloud-sync-spacer"></span>
+    <button type="button" class="cloud-sync-btn" id="cloudSyncSettingsBtn">동기화 설정</button>
+  </div>
+
   <div class="hint">작성 중인 내용은  저장됨. 최종 작성이 끝나면 <b>조식 리딩 저장하기</b>를 눌러 날짜별 기록으로 남김.</div>
 
   <section class="reading-archive">
@@ -1284,6 +1378,73 @@ html,body{touch-action:pan-x pan-y pinch-zoom;-webkit-text-size-adjust:100%}
   </section>
 </div>
 <div class="archive-toast" id="archiveToast">저장됨.</div>
+
+<div class="cloud-modal" id="cloudSyncModal" aria-hidden="true">
+  <section class="cloud-dialog" role="dialog" aria-modal="true" aria-labelledby="cloudSyncTitle">
+    <div class="cloud-head">
+      <h3 id="cloudSyncTitle">PC ↔ 모바일 실시간 공유 설정</h3>
+      <p>Supabase 프로젝트를 한 번 연결하면 같은 Workspace Code를 쓰는 PC·모바일에서 조식리딩 작성내용과 날짜별 저장본이 실시간으로 공유됨.</p>
+    </div>
+    <div class="cloud-body">
+      <div class="cloud-field">
+        <label for="cloudUrl">Supabase Project URL</label>
+        <input id="cloudUrl" type="url" autocomplete="off" placeholder="https://xxxxxxxx.supabase.co">
+      </div>
+      <div class="cloud-field">
+        <label for="cloudAnonKey">Supabase anon / publishable key</label>
+        <input id="cloudAnonKey" type="password" autocomplete="off" placeholder="eyJ... 또는 sb_publishable_...">
+      </div>
+      <div class="cloud-field">
+        <label for="cloudWorkspace">Workspace Code · PC와 모바일에서 반드시 동일하게</label>
+        <input id="cloudWorkspace" type="text" autocomplete="off" value="TOYU-BREAKFAST" placeholder="TOYU-BREAKFAST">
+      </div>
+      <div class="cloud-note">
+        아래 SQL을 Supabase의 <b>SQL Editor</b>에서 한 번 실행해야 함. 브라우저에 넣는 키는 <b>service_role이 아니라 anon/publishable key</b>를 사용함.
+        Workspace Code를 사내에서만 아는 값으로 바꾸면 다른 프로젝트 이용자와 데이터가 섞이지 않음.
+      </div>
+      <label style="display:block;margin-bottom:6px;font-size:11px;font-weight:850;color:#59635d">최초 1회 실행 SQL</label>
+      <textarea class="cloud-sql" id="cloudSetupSql" readonly>create table if not exists public.toyu_realtime_store (
+  workspace text not null,
+  bucket text not null,
+  payload jsonb not null default '{}'::jsonb,
+  source_id text,
+  updated_at timestamptz not null default now(),
+  primary key (workspace, bucket)
+);
+
+alter table public.toyu_realtime_store enable row level security;
+
+drop policy if exists "toyu_read" on public.toyu_realtime_store;
+drop policy if exists "toyu_insert" on public.toyu_realtime_store;
+drop policy if exists "toyu_update" on public.toyu_realtime_store;
+
+create policy "toyu_read"
+on public.toyu_realtime_store for select
+to anon, authenticated
+using (true);
+
+create policy "toyu_insert"
+on public.toyu_realtime_store for insert
+to anon, authenticated
+with check (true);
+
+create policy "toyu_update"
+on public.toyu_realtime_store for update
+to anon, authenticated
+using (true)
+with check (true);
+
+alter publication supabase_realtime add table public.toyu_realtime_store;</textarea>
+      <div class="cloud-actions">
+        <button type="button" id="cloudCopySqlBtn">SQL 복사</button>
+        <button type="button" class="danger" id="cloudDisconnectBtn">연결 해제</button>
+        <button type="button" id="cloudCancelBtn">닫기</button>
+        <button type="button" class="primary" id="cloudConnectBtn">저장하고 연결</button>
+      </div>
+    </div>
+  </section>
+</div>
+
 
 <div class="ocr-modal" id="sheetTextModal" aria-hidden="true">
   <section class="ocr-dialog" role="dialog" aria-modal="true" aria-labelledby="sheetTextTitle">
@@ -1354,7 +1515,229 @@ const init={
   memo:{front:{active:1,items:{}},kitchen:{active:1,items:{}}},
   finalLocked:false
 };
+
 let state=structuredClone(init);
+
+/* ===== PC ↔ 모바일 Supabase 실시간 동기화 ===== */
+const CLOUD_CFG_KEY='toyuCloudSyncConfig_v1';
+const CLOUD_TABLE='toyu_realtime_store';
+const DEVICE_ID_KEY='toyuCloudDeviceId_v1';
+const DEVICE_ID=(()=>{
+  let id=localStorage.getItem(DEVICE_ID_KEY);
+  if(!id){ id=(crypto.randomUUID?.() || ('dev_'+Date.now()+'_'+Math.random().toString(36).slice(2))); localStorage.setItem(DEVICE_ID_KEY,id); }
+  return id;
+})();
+let cloudClient=null;
+let cloudChannel=null;
+let cloudReady=false;
+let cloudStateTimer=null;
+let cloudArchiveTimer=null;
+let cloudApplying=false;
+
+function getCloudConfig(){
+  try{
+    const x=JSON.parse(localStorage.getItem(CLOUD_CFG_KEY)||'{}');
+    return {url:String(x.url||'').trim(), key:String(x.key||'').trim(), workspace:String(x.workspace||'TOYU-BREAKFAST').trim()||'TOYU-BREAKFAST'};
+  }catch(_){ return {url:'',key:'',workspace:'TOYU-BREAKFAST'}; }
+}
+function setCloudStatus(mode,text){
+  const bar=document.getElementById('cloudSyncBar');
+  const el=document.getElementById('cloudSyncText');
+  if(!bar||!el)return;
+  bar.classList.remove('online','syncing','error');
+  if(mode)bar.classList.add(mode);
+  el.textContent=text;
+}
+function normalizeWholeState(x){
+  let next={...structuredClone(init),...(x||{})};
+  if(!Array.isArray(next.rows)) next.rows=Array.from({length:13},emptyRow);
+  while(next.rows.length<13) next.rows.push(emptyRow());
+  next.rows=next.rows.slice(0,13).map(normalizeRow);
+  if(!next.memo) next.memo=structuredClone(init.memo);
+  return next;
+}
+function renderAllFromCloud(){
+  document.getElementById('sheetDate').value=state.date;
+  renderRows();
+  renderMemo('front');
+  renderMemo('kitchen');
+  renderArchiveList();
+}
+async function cloudUpsert(bucket,payload){
+  if(!cloudReady||!cloudClient||cloudApplying)return;
+  const cfg=getCloudConfig();
+  setCloudStatus('syncing','서버와 동기화 중...');
+  const {error}=await cloudClient.from(CLOUD_TABLE).upsert({
+    workspace:cfg.workspace,
+    bucket,
+    payload,
+    source_id:DEVICE_ID,
+    updated_at:new Date().toISOString()
+  },{onConflict:'workspace,bucket'});
+  if(error){
+    console.error('[TOYU cloud upsert]',error);
+    setCloudStatus('error','동기화 오류 · 설정 확인 필요');
+    return;
+  }
+  setCloudStatus('online','PC · 모바일 실시간 공유 중');
+}
+function queueCloudStateSave(){
+  clearTimeout(cloudStateTimer);
+  cloudStateTimer=setTimeout(()=>cloudUpsert('state',JSON.parse(JSON.stringify(state))),280);
+}
+function queueCloudArchiveSave(items){
+  clearTimeout(cloudArchiveTimer);
+  const snapshot=JSON.parse(JSON.stringify(items||[]));
+  cloudArchiveTimer=setTimeout(()=>cloudUpsert('archives',snapshot),280);
+}
+function isMeaningfulCloudValue(v){
+  if(v===null || v===undefined) return false;
+  if(typeof v==='string') return v.trim()!=='';
+  if(typeof v==='number') return Number.isFinite(v) && v!==0;
+  if(typeof v==='boolean') return v===true;
+  if(Array.isArray(v)) return v.length>0;
+  if(typeof v==='object') return Object.keys(v).length>0;
+  return false;
+}
+function mergePreserveExisting(localValue, cloudValue){
+  if(Array.isArray(localValue) || Array.isArray(cloudValue)){
+    const la=Array.isArray(localValue)?localValue:[];
+    const ca=Array.isArray(cloudValue)?cloudValue:[];
+    if(la.length && la.every(x=>x && typeof x==='object' && !Array.isArray(x)) && ca.length){
+      const n=Math.max(la.length,ca.length);
+      return Array.from({length:n},(_,i)=>mergePreserveExisting(la[i],ca[i]));
+    }
+    return la.length ? JSON.parse(JSON.stringify(la)) : JSON.parse(JSON.stringify(ca));
+  }
+  if(localValue && typeof localValue==='object' && cloudValue && typeof cloudValue==='object'){
+    const out={...cloudValue};
+    for(const k of Object.keys(localValue)) out[k]=mergePreserveExisting(localValue[k],cloudValue[k]);
+    return out;
+  }
+  return isMeaningfulCloudValue(localValue) ? localValue : cloudValue;
+}
+function mergeArchivesPreserveAll(localItems,cloudItems){
+  const map=new Map();
+  [...(Array.isArray(cloudItems)?cloudItems:[]),...(Array.isArray(localItems)?localItems:[])].forEach(item=>{
+    if(!item)return;
+    const key=item.date || item.id || JSON.stringify(item);
+    const prev=map.get(key);
+    if(!prev){ map.set(key,item); return; }
+    const a=String(prev.savedAt||''), b=String(item.savedAt||'');
+    map.set(key,b>=a?item:prev);
+  });
+  return [...map.values()].sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')) || String(b.savedAt||'').localeCompare(String(a.savedAt||'')));
+}
+async function initCloudSync(){
+  const cfg=getCloudConfig();
+  if(!cfg.url||!cfg.key){
+    cloudReady=false;
+    setCloudStatus('','이 기기에 저장됨 · 실시간 공유 설정 전');
+    return;
+  }
+  if(!window.supabase?.createClient){
+    setCloudStatus('error','동기화 라이브러리를 불러오지 못함 · 인터넷 확인');
+    return;
+  }
+  try{
+    setCloudStatus('syncing','기존 자료를 보존하며 실시간 공유 연결 중...');
+    if(cloudChannel&&cloudClient){ try{ await cloudClient.removeChannel(cloudChannel); }catch(_){} }
+    cloudClient=window.supabase.createClient(cfg.url,cfg.key,{
+      auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false},
+      realtime:{params:{eventsPerSecond:10}}
+    });
+
+    /* 연결 전에 이 기기의 기존 자료를 별도 백업함 */
+    try{
+      const stamp=new Date().toISOString();
+      localStorage.setItem('toyuBackupBeforeCloud_state_v1',localStorage.getItem(KEY)||JSON.stringify(state));
+      localStorage.setItem('toyuBackupBeforeCloud_archives_v1',localStorage.getItem(ARCHIVE_KEY)||'[]');
+      localStorage.setItem('toyuBackupBeforeCloud_time_v1',stamp);
+    }catch(_){}
+
+    const localState=normalizeWholeState(state);
+    const localArchives=archiveLoadAll();
+
+    const {data,error}=await cloudClient.from(CLOUD_TABLE)
+      .select('workspace,bucket,payload,source_id,updated_at')
+      .eq('workspace',cfg.workspace)
+      .in('bucket',['state','archives']);
+
+    if(error) throw error;
+
+    cloudApplying=true;
+    try{
+      const stateRow=(data||[]).find(x=>x.bucket==='state');
+      const archiveRow=(data||[]).find(x=>x.bucket==='archives');
+
+      /* 최초 연결에서는 어느 한쪽으로 덮어쓰지 않고, 이 기기의 기존 입력을 우선 보존해 병합함 */
+      const mergedState=normalizeWholeState(
+        stateRow?.payload ? mergePreserveExisting(localState,stateRow.payload) : localState
+      );
+      const mergedArchives=mergeArchivesPreserveAll(localArchives,archiveRow?.payload);
+
+      state=mergedState;
+      localStorage.setItem(KEY,JSON.stringify(state));
+      localStorage.setItem(ARCHIVE_KEY,JSON.stringify(mergedArchives));
+
+      await cloudClient.from(CLOUD_TABLE).upsert([
+        {workspace:cfg.workspace,bucket:'state',payload:JSON.parse(JSON.stringify(mergedState)),source_id:DEVICE_ID,updated_at:new Date().toISOString()},
+        {workspace:cfg.workspace,bucket:'archives',payload:JSON.parse(JSON.stringify(mergedArchives)),source_id:DEVICE_ID,updated_at:new Date().toISOString()}
+      ],{onConflict:'workspace,bucket'});
+
+      renderAllFromCloud();
+    }finally{ cloudApplying=false; }
+
+    cloudChannel=cloudClient.channel('toyu-sync-'+cfg.workspace)
+      .on('postgres_changes',{
+        event:'*',schema:'public',table:CLOUD_TABLE,filter:`workspace=eq.${cfg.workspace}`
+      },payload=>{
+        const row=payload.new||{};
+        if(!row.bucket || row.source_id===DEVICE_ID) return;
+        cloudApplying=true;
+        try{
+          if(row.bucket==='state' && row.payload){
+            state=normalizeWholeState(row.payload);
+            localStorage.setItem(KEY,JSON.stringify(state));
+            renderAllFromCloud();
+            setCloudStatus('online','다른 기기의 변경내용을 받음 · 실시간 공유 중');
+          }else if(row.bucket==='archives' && Array.isArray(row.payload)){
+            const merged=mergeArchivesPreserveAll(archiveLoadAll(),row.payload);
+            localStorage.setItem(ARCHIVE_KEY,JSON.stringify(merged));
+            renderArchiveList();
+            setCloudStatus('online','날짜별 저장본 동기화 완료');
+          }
+        }finally{ cloudApplying=false; }
+      })
+      .subscribe(status=>{
+        if(status==='SUBSCRIBED'){
+          cloudReady=true;
+          setCloudStatus('online','PC · 모바일 실시간 공유 중 · 기존 자료 보존됨');
+        }else if(status==='CHANNEL_ERROR' || status==='TIMED_OUT'){
+          cloudReady=false;
+          setCloudStatus('error','실시간 연결 오류 · 설정 확인 필요');
+        }
+      });
+  }catch(err){
+    console.error('[TOYU cloud init]',err);
+    cloudReady=false;
+    setCloudStatus('error','연결 실패 · Project URL / key / SQL 확인');
+  }
+}
+
+function openCloudSettings(){
+  const cfg=getCloudConfig();
+  document.getElementById('cloudUrl').value=cfg.url;
+  document.getElementById('cloudAnonKey').value=cfg.key;
+  document.getElementById('cloudWorkspace').value=cfg.workspace;
+  const m=document.getElementById('cloudSyncModal');
+  m?.classList.add('open');m?.setAttribute('aria-hidden','false');
+}
+function closeCloudSettings(){
+  const m=document.getElementById('cloudSyncModal');
+  m?.classList.remove('open');m?.setAttribute('aria-hidden','true');
+}
+
 
 function normalizePeopleGroups(groups){
   if(!Array.isArray(groups)) return [];
@@ -1425,23 +1808,40 @@ function mealItems(r){
 }
 function mealText(r){ return mealItems(r).join(' · '); }
 
+function stayBreakfastNotes(r){
+  if(!String(r?.status||'').includes('연박')) return [];
+  const nights=Math.max(1,Math.min(10,Number(r?.stayNights)||1));
+  return (Array.isArray(r?.stayBreakfasts)?r.stayBreakfasts:[])
+    .slice(0,nights)
+    .map((x,idx)=>({night:idx+1,text:String(x||'').trim()}))
+    .filter(x=>x.text);
+}
+function stayBreakfastChartHtml(r){
+  const notes=stayBreakfastNotes(r);
+  if(!notes.length) return '';
+  const prefix=r?.stayBreakfastLumped?'연박조식 · 몰아사용':'연박조식';
+  return `<span class="stay-chart-note"><b>${safeHtml(prefix)}</b><br>${notes.map(x=>`${x.night}박 후 ${safeHtml(x.text)}`).join('<br>')}</span>`;
+}
+function needsRoomTouchReminder(r){
+  return String(r?.status||'').includes('연박');
+}
+
 function load(){
   try{
     let raw=localStorage.getItem(KEY);
     if(!raw) raw=localStorage.getItem(LEGACY_KEY);
     const x=raw?JSON.parse(raw):null;
-    if(x) state={...structuredClone(init),...x};
-    if(!Array.isArray(state.rows)) state.rows=Array.from({length:13},emptyRow);
-    while(state.rows.length<13) state.rows.push(emptyRow());
-    state.rows=state.rows.slice(0,13).map(normalizeRow);
-  }catch(e){}
+    if(x) state=normalizeWholeState(x);
+    else state=normalizeWholeState(state);
+  }catch(e){ state=normalizeWholeState(state); }
 }
 function save(){
   localStorage.setItem(KEY,JSON.stringify(state));
   const s=document.getElementById('saveState');
   s.textContent='● 저장 중...';
   clearTimeout(window.sTimer);
-  window.sTimer=setTimeout(()=>s.textContent='●  저장됨',300);
+  window.sTimer=setTimeout(()=>s.textContent='●  이 기기에 저장됨',300);
+  queueCloudStateSave();
 }
 function opts(list,val){
   return list.map(x=>`<option value="${x}" ${x===val?'selected':''}>${x||'선택'}</option>`).join('');
@@ -1513,7 +1913,7 @@ function compactCompletedHtml(r,i){
     <td class="done-cell done-room">${r.room?safeHtml(r.room)+'호':'-'}</td>
     <td class="done-cell">${r.seat?safeHtml(r.seat):'-'}</td>
     <td class="done-cell ${status.includes('연박')?'done-stay':''}">${safeHtml(status)}</td>
-    <td class="done-cell">${r.name?safeHtml(r.name):'-'}</td>
+    <td class="done-cell">${r.name?safeHtml(r.name):'-'}${stayBreakfastChartHtml(r)}</td>
     <td class="done-cell done-people">${people}</td>
     <td class="done-cell">${r.type?safeHtml(r.type):'-'}</td>
     <td class="done-cell done-time">${r.time?safeHtml(r.time):'-'}</td>
@@ -1611,7 +2011,7 @@ function openCompletedDetail(i,tr){
     <div class="completed-detail-people"><small>총인원</small><b>${c.total}명</b><span>(어른 ${c.adults} + 아이 ${c.kids})</span></div>
     <div class="completed-detail-label">메뉴</div><div class="completed-detail-menu">${menu}</div>
     <div class="completed-detail-salad">🥗 샐러드 ${c.adults}개</div>
-    <div class="completed-detail-meta">${safeHtml(r.time||'시간 미선택')}${r.status?' · '+safeHtml(r.status):''}${r.name?' · '+safeHtml(r.name):''}</div>
+    <div class="completed-detail-meta">${safeHtml(r.time||'시간 미선택')}${r.status?' · '+safeHtml(r.status):''}${r.name?' · '+safeHtml(r.name):''}</div>${stayBreakfastChartHtml(r)}
     <div class="completed-detail-actions"><button type="button" data-detail-memo="${i}">💬 메모</button><button type="button" data-detail-close>닫기</button></div>
   </div></td>`;
   tr.insertAdjacentElement('afterend',detail);
@@ -1658,7 +2058,7 @@ function renderRows(){
       <td><select class="room-select" data-i="${i}" data-k="room">${opts(['',...ROOMS],r.room)}</select></td>
       <td><select class="seat-select" data-i="${i}" data-k="seat">${opts(SEATS,r.seat)}</select></td>
       <td><select data-i="${i}" data-k="status">${opts(STATUS,r.status)}</select></td>
-      <td><input class="name-input" data-i="${i}" data-k="name" value="${escAttr(r.name)}" placeholder="예약자명"></td>
+      <td><input class="name-input" data-i="${i}" data-k="name" value="${escAttr(r.name)}" placeholder="예약자명">${stayBreakfastChartHtml(r)}</td>
       <td>${peopleEditorHtml(r,i)}</td>
       <td><select class="type-select" data-i="${i}" data-k="type">${opts(TYPES,r.type)}</select></td>
       <td><select class="time-select" data-i="${i}" data-k="time">${opts(TIMES,r.time)}</select></td>
@@ -1876,10 +2276,11 @@ function renderFloorplan(){
       box.innerHTML=`<div class="seat-content">
         <div class="seat-name">${seat}</div>
         <button type="button" class="room-tag seat-room-jump" data-jump-row="${r.rowIndex}">${room}</button>
+        ${needsRoomTouchReminder(r)?`<span class="roomtouch-reminder-badge" title="연박 · 오늘 룸터치 여부 확인">R</span>`:''}
         ${counts.total?`<div class="seat-people"><small>총인원</small><b>${counts.total}명</b><em>(어른 ${counts.adults} + 아이 ${counts.kids})</em></div>`:''}
         <div class="seat-menu-label">메뉴</div><div class="seat-menu-text">${menuLine}</div>
         <div class="seat-salad">🥗 샐러드 <b>${counts.adults}개</b></div>
-        <button type="button" class="seat-memo-trigger" data-room-row="${r.rowIndex}">💬 메모</button>
+        <button type="button" class="seat-memo-trigger ${String(r.roomMemo||'').trim()?'has-memo':''}" data-room-row="${r.rowIndex}">💬 메모</button>
       </div>`;
       box.querySelector('[data-jump-row]')?.addEventListener('click',e=>{e.stopPropagation();jumpToReadingRow(r.rowIndex)});
       box.querySelector('[data-room-row]')?.addEventListener('click',e=>{e.stopPropagation();openRoomMemo(r.rowIndex)});
@@ -1890,7 +2291,7 @@ function renderFloorplan(){
       };
       box.onkeydown=e=>{if((e.key==='Enter'||e.key===' ')&&!e.target.closest('button')){e.preventDefault();box.classList.toggle('expanded')}};
     }else{
-      box.innerHTML=`<div class="seat-content"><div class="seat-name">${seat}</div><div class="seat-dup">⚠ 중복 배정</div>${list.map(r=>{const c=adultChildCounts(r);return `<button type="button" class="room-tag seat-room-jump" data-jump-row="${r.rowIndex}">${safeHtml(r.room||'?')}호</button><div class="seat-guest">총 ${c.total}명 (어른 ${c.adults}+아이 ${c.kids})</div><div class="seat-menu-text">${mealItems(r).length?safeHtml(mealItems(r).join(' · ')):'메뉴 미입력'}</div><div class="seat-salad">🥗 샐러드 <b>${c.adults}개</b></div><button type="button" class="seat-memo-trigger" data-room-row="${r.rowIndex}">💬 메모</button>`}).join('')}</div>`;
+      box.innerHTML=`<div class="seat-content"><div class="seat-name">${seat}</div><div class="seat-dup">⚠ 중복 배정</div>${list.map(r=>{const c=adultChildCounts(r);return `<button type="button" class="room-tag seat-room-jump" data-jump-row="${r.rowIndex}">${safeHtml(r.room||'?')}호</button>${needsRoomTouchReminder(r)?`<span class="roomtouch-reminder-badge" title="연박 · 오늘 룸터치 여부 확인">R</span>`:''}<div class="seat-guest">총 ${c.total}명 (어른 ${c.adults}+아이 ${c.kids})</div><div class="seat-menu-text">${mealItems(r).length?safeHtml(mealItems(r).join(' · ')):'메뉴 미입력'}</div><div class="seat-salad">🥗 샐러드 <b>${c.adults}개</b></div><button type="button" class="seat-memo-trigger ${String(r.roomMemo||'').trim()?'has-memo':''}" data-room-row="${r.rowIndex}">💬 메모</button>`}).join('')}</div>`;
       box.querySelectorAll('[data-jump-row]').forEach(btn=>btn.addEventListener('click',e=>{e.stopPropagation();jumpToReadingRow(Number(btn.dataset.jumpRow))}));
       box.querySelectorAll('[data-room-row]').forEach(btn=>btn.addEventListener('click',e=>{e.stopPropagation();openRoomMemo(Number(btn.dataset.roomRow))}));
       box.onclick=(e)=>{if(e.target.closest('button'))return;box.classList.toggle('expanded')};
@@ -2056,6 +2457,7 @@ function archiveLoadAll(){
 
 function archiveStoreAll(items){
   localStorage.setItem(ARCHIVE_KEY,JSON.stringify(items));
+  queueCloudArchiveSave(items);
 }
 
 function formatReadingTitle(dateStr){
@@ -2325,12 +2727,45 @@ function closeOrderPrompt(){const m=document.getElementById('orderPromptModal');
 async function copyOrderPrompt(){const t=document.getElementById('orderPromptText'),s=document.getElementById('orderPromptStatus');if(!t)return;let ok=false;try{await navigator.clipboard.writeText(t.value);ok=true}catch(e){try{t.focus();t.select();ok=document.execCommand('copy')}catch(_){ok=false}}if(s)s.textContent=ok?'Copied.':'Select the text and copy it manually.'}
 document.getElementById('openOrderPromptBtn')?.addEventListener('click',openOrderPrompt);document.getElementById('orderPromptClose')?.addEventListener('click',closeOrderPrompt);document.getElementById('orderPromptCancel')?.addEventListener('click',closeOrderPrompt);document.getElementById('copyOrderPromptBtn')?.addEventListener('click',copyOrderPrompt);document.getElementById('orderPromptModal')?.addEventListener('mousedown',e=>{if(e.target.id==='orderPromptModal')closeOrderPrompt()});
 
+document.getElementById('cloudSyncSettingsBtn')?.addEventListener('click',openCloudSettings);
+document.getElementById('cloudCancelBtn')?.addEventListener('click',closeCloudSettings);
+document.getElementById('cloudSyncModal')?.addEventListener('mousedown',e=>{if(e.target.id==='cloudSyncModal')closeCloudSettings()});
+document.getElementById('cloudCopySqlBtn')?.addEventListener('click',async()=>{
+  const t=document.getElementById('cloudSetupSql');
+  try{await navigator.clipboard.writeText(t.value);showArchiveToast('Supabase SQL 복사 완료');}
+  catch(_){t.focus();t.select();document.execCommand('copy');showArchiveToast('Supabase SQL 복사 완료');}
+});
+document.getElementById('cloudDisconnectBtn')?.addEventListener('click',async()=>{
+  if(!confirm('이 기기에서 실시간 공유 연결을 해제할까요? 기기 안에 저장된 내용은 남아있음.'))return;
+  localStorage.removeItem(CLOUD_CFG_KEY);
+  cloudReady=false;
+  if(cloudChannel&&cloudClient){try{await cloudClient.removeChannel(cloudChannel)}catch(_){}}
+  cloudChannel=null;cloudClient=null;
+  closeCloudSettings();
+  setCloudStatus('','이 기기에 저장됨 · 실시간 공유 설정 전');
+});
+document.getElementById('cloudConnectBtn')?.addEventListener('click',async()=>{
+  const cfg={
+    url:String(document.getElementById('cloudUrl')?.value||'').trim().replace(/\/+$/,''),
+    key:String(document.getElementById('cloudAnonKey')?.value||'').trim(),
+    workspace:String(document.getElementById('cloudWorkspace')?.value||'TOYU-BREAKFAST').trim()||'TOYU-BREAKFAST'
+  };
+  if(!/^https:\/\/.+\.supabase\.co$/i.test(cfg.url)){alert('Supabase Project URL을 확인해 주세요.');return;}
+  if(!cfg.key){alert('anon / publishable key를 입력해 주세요.');return;}
+  localStorage.setItem(CLOUD_CFG_KEY,JSON.stringify(cfg));
+  closeCloudSettings();
+  await initCloudSync();
+});
+window.addEventListener('online',()=>initCloudSync());
+window.addEventListener('offline',()=>setCloudStatus('error','오프라인 · 이 기기에 저장 중'));
+
 load();
 document.getElementById('sheetDate').value=state.date;
 renderRows();
 setupMemo('front');setupMemo('kitchen');
 renderMemo('front');renderMemo('kitchen');
 renderArchiveList();
+initCloudSync();
 </script>
 </body>
 </html>
