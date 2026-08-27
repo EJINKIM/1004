@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Portal</title>
+  <style>
+    :root{
+      --bg:#ffffff;
+      --ink:#262330;
+      --muted:#7f7889;
+      --shadow:0 18px 52px rgba(110,90,142,.12), 0 3px 10px rgba(120,130,170,.06), inset 0 1px 0 rgba(255,255,255,.96);
+      --radius:30px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      color:var(--ink);
+      font-family:Pretendard,"Noto Sans KR",Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:#ffffff;
+      overflow-x:hidden;
+    }
+
+    .wrap{
+      min-height:100%;
+      display:grid;
+      place-items:center;
+      padding:28px;
+    }
+
+    .grid{
+      width:min(1180px, 100%);
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0, 1fr));
+      gap:18px;
+      align-items:stretch;
+    }
+
+    .card{
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      min-height:210px;
+      padding:22px 20px;
+      overflow:hidden;
+      border-radius:var(--radius);
+      text-decoration:none;
+      color:inherit;
+      border:1px solid rgba(255,255,255,.92);
+      background:
+        linear-gradient(145deg, rgba(255,255,255,.86), rgba(255,255,255,.38)),
+        linear-gradient(135deg, rgba(233,205,255,.22), rgba(189,226,255,.18) 52%, rgba(214,255,245,.16));
+      backdrop-filter:blur(18px) saturate(1.2);
+      -webkit-backdrop-filter:blur(18px) saturate(1.2);
+      box-shadow:var(--shadow);
+      transition:transform .38s cubic-bezier(.2,.75,.2,1), box-shadow .35s ease, border-color .35s ease;
+      isolation:isolate;
+      -webkit-tap-highlight-color:transparent;
+      text-align:center;
+    }
+
+    .card::before{
+      content:"";
+      position:absolute; inset:-1px; z-index:-2; border-radius:inherit;
+      background:conic-gradient(from 220deg,
+        rgba(255,255,255,0),
+        rgba(248,214,255,.82),
+        rgba(205,233,255,.80),
+        rgba(213,255,244,.78),
+        rgba(236,218,255,.82),
+        rgba(255,255,255,0));
+      opacity:0;
+      filter:blur(14px);
+      transition:opacity .35s ease;
+    }
+
+    .card::after{
+      content:"";
+      position:absolute; inset:0; z-index:-1;
+      background:
+        radial-gradient(circle at 24% 14%, rgba(255,255,255,.95), transparent 24%),
+        radial-gradient(circle at 86% 82%, rgba(205,226,255,.28), transparent 32%);
+      opacity:.9;
+    }
+
+    .card:hover, .card:focus-visible, .card.touching{
+      transform:translateY(-9px) scale(1.018);
+      box-shadow:0 28px 76px rgba(103,84,139,.18), 0 10px 20px rgba(128,141,189,.08), inset 0 1px 0 rgba(255,255,255,.98);
+      border-color:rgba(255,255,255,1);
+    }
+    .card:hover::before, .card:focus-visible::before, .card.touching::before{opacity:1}
+
+    .wide{grid-column:span 2}
+    .tall{min-height:256px}
+    .soft{background:
+        linear-gradient(145deg, rgba(255,255,255,.86), rgba(255,255,255,.38)),
+        linear-gradient(135deg, rgba(255,223,240,.20), rgba(210,241,255,.18) 52%, rgba(235,223,255,.18))}
+    .cool{background:
+        linear-gradient(145deg, rgba(255,255,255,.86), rgba(255,255,255,.38)),
+        linear-gradient(135deg, rgba(212,236,255,.24), rgba(237,226,255,.16) 58%, rgba(215,255,247,.18))}
+    .mint{background:
+        linear-gradient(145deg, rgba(255,255,255,.86), rgba(255,255,255,.38)),
+        linear-gradient(135deg, rgba(221,255,243,.22), rgba(211,232,255,.18) 58%, rgba(245,220,255,.16))}
+
+    .icon{
+      width:68px; height:68px;
+      border-radius:22px;
+      display:grid; place-items:center;
+      font-size:29px; font-weight:900;
+      letter-spacing:-.04em;
+      color:#f7f7fb;
+      text-shadow:0 1px 0 rgba(255,255,255,.9), 0 0 20px rgba(255,255,255,.55);
+      background:
+        linear-gradient(145deg, rgba(255,255,255,.88), rgba(255,255,255,.26)),
+        linear-gradient(135deg, rgba(230,198,255,.58), rgba(183,222,255,.58) 56%, rgba(208,255,239,.52));
+      border:1px solid rgba(255,255,255,.92);
+      box-shadow:inset 0 1px 1px rgba(255,255,255,.96), 0 12px 28px rgba(105,89,142,.13);
+      transition:transform .38s cubic-bezier(.2,.75,.2,1), box-shadow .35s ease;
+      overflow:hidden;
+      position:relative;
+      flex:0 0 auto;
+    }
+    .icon::before{
+      content:"";
+      position:absolute;
+      width:160%; height:18px;
+      transform:rotate(-24deg) translateY(-54px);
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.88), transparent);
+      animation:shine 5.8s ease-in-out infinite;
+    }
+    @keyframes shine{
+      0%,70%{transform:rotate(-24deg) translateY(-54px)}
+      87%,100%{transform:rotate(-24deg) translateY(86px)}
+    }
+
+    .card:hover .icon, .card:focus-visible .icon, .card.touching .icon{
+      transform:translate3d(7px,-8px,0) rotate(6deg) scale(1.05);
+      box-shadow:inset 0 1px 1px rgba(255,255,255,.96), 0 18px 34px rgba(113,91,145,.18);
+    }
+
+    .text{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      width:100%;
+    }
+
+    .label{
+      display:block;
+      font-size:clamp(18px, 2.1vw, 24px);
+      line-height:1.24;
+      font-weight:900;
+      letter-spacing:-.05em;
+      text-align:center;
+      word-break:keep-all;
+    }
+    .sub{
+      display:block;
+      font-size:12px;
+      line-height:1.45;
+      color:var(--muted);
+      font-weight:700;
+      text-align:center;
+      word-break:keep-all;
+      max-width:92%;
+    }
+    .arrow{
+      position:absolute;
+      right:18px; top:18px;
+      width:34px; height:34px; border-radius:50%;
+      display:grid; place-items:center;
+      font-size:14px; font-weight:900;
+      color:#746d7c;
+      background:rgba(255,255,255,.58);
+      border:1px solid rgba(255,255,255,.86);
+      transition:transform .3s ease;
+    }
+    .card:hover .arrow, .card:focus-visible .arrow, .card.touching .arrow{transform:translateX(4px)}
+
+    .halo{
+      position:absolute; left:50%; top:50%;
+      transform:translate(-50%,-50%);
+      width:130px; height:130px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(255,255,255,.24), transparent 70%);
+      filter:blur(8px);
+      pointer-events:none;
+      z-index:0;
+    }
+
+    .spark{
+      position:fixed;
+      width:7px; height:7px;
+      border-radius:50%;
+      pointer-events:none;
+      z-index:9999;
+      background:white;
+      box-shadow:0 0 14px rgba(255,255,255,.98), 0 0 26px rgba(194,213,255,.78);
+      animation:spark .75s ease-out forwards;
+    }
+    @keyframes spark{
+      to{transform:translate(var(--dx),var(--dy)) scale(0); opacity:0}
+    }
+    .ripple{
+      position:absolute;
+      border-radius:50%;
+      background:rgba(255,255,255,.74);
+      transform:scale(0);
+      animation:ripple .86s ease-out forwards;
+      pointer-events:none;
+      z-index:3;
+    }
+    @keyframes ripple{
+      to{transform:scale(4.7); opacity:0}
+    }
+
+    @media (max-width:1000px){
+      .grid{grid-template-columns:repeat(3, minmax(0,1fr))}
+    }
+    @media (max-width:720px){
+      .wrap{padding:18px}
+      .grid{grid-template-columns:repeat(2, minmax(0,1fr)); gap:12px}
+      .card{min-height:180px; padding:16px; border-radius:24px}
+      .wide{grid-column:span 2}
+      .tall{min-height:206px}
+      .icon{width:58px;height:58px;border-radius:18px;font-size:25px}
+      .arrow{top:14px;right:14px;width:30px;height:30px}
+      .sub{display:block; font-size:11px}
+      .label{font-size:17px}
+    }
+    @media (max-width:430px){
+      .grid{gap:10px}
+      .card{min-height:170px; padding:14px}
+      .label{font-size:15px}
+      .sub{font-size:10px}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *,*::before,*::after{animation:none!important;transition:none!important}
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="grid">
+      <a class="card wide tall soft" data-key="breakfast" href="#">
+        <span class="arrow">↗</span>
+        <span class="halo"></span>
+        <span class="icon">🍽</span>
+        <span class="text">
+          <span class="label">조식 리딩<br>연습하기</span>
+          <span class="sub">호실 · 인원 · 메뉴 · 시간</span>
+        </span>
+      </a>
+
+      <a class="card cool" data-key="extra" href="#">
+        <span class="arrow">↗</span>
+        <span class="halo"></span>
+        <span class="icon">＋</span>
+        <span class="text">
+          <span class="label">객실 인추 · 침추<br>어메니티</span>
+          <span class="sub">추가 인원 · 침구 · 비품</span>
+        </span>
+      </a>
+
+      <a class="card mint" data-key="laundry" href="#">
+        <span class="arrow">↗</span>
+        <span class="halo"></span>
+        <span class="icon">🫧</span>
+        <span class="text">
+          <span class="label">세탁 서비스</span>
+          <span class="sub">접수 · 수거 · 전달</span>
+        </span>
+      </a>
+
+      <a class="card soft" data-key="toyu" href="#">
+        <span class="arrow">↗</span>
+        <span class="halo"></span>
+        <span class="icon">寓</span>
+        <span class="text">
+          <span class="label">TOYU 뜻</span>
+          <span class="sub">브랜드 의미</span>
+        </span>
+      </a>
+
+      <a class="card cool" data-key="checkin" href="#">
+        <span class="arrow">↗</span>
+        <span class="halo"></span>
+        <span class="icon">⌁</span>
+        <span class="text">
+          <span class="label">체크인 안내</span>
+          <span class="sub">레지카드 · 웰컴티 · 시설안내</span>
+        </span>
+      </a>
+
+      <a class="card wide mint" data-key="inspection" href="#">
+        <span class="arrow">↗</span>
+        <span class="halo"></span>
+        <span class="icon">✓</span>
+        <span class="text">
+          <span class="label">객실 인스펙</span>
+          <span class="sub">완료 객실 · 선순위 · 상태 체크</span>
+        </span>
+      </a>
+
+      <a class="card soft" data-key="roomtouch" href="#">
+        <span class="arrow">↗</span>
+        <span class="halo"></span>
+        <span class="icon">✦</span>
+        <span class="text">
+          <span class="label">룸터치 · 연박</span>
+          <span class="sub">외출 시간 · 청소 · 딜리</span>
+        </span>
+      </a>
+
+      <a class="card cool" data-key="closing" href="#">
+        <span class="arrow">↗</span>
+        <span class="halo"></span>
+        <span class="icon">⌂</span>
+        <span class="text">
+          <span class="label">마감 업무</span>
+          <span class="sub">매출 · 객실 · 조식 · 설비</span>
+        </span>
+      </a>
+
+      <a class="card mint" data-key="opening" href="#">
+        <span class="arrow">↗</span>
+        <span class="halo"></span>
+        <span class="icon">☼</span>
+        <span class="text">
+          <span class="label">오픈 루틴</span>
+          <span class="sub">티 · POS · 음악 · 세팅</span>
+        </span>
+      </a>
+
+      <a class="card soft" data-key="english" href="#">
+        <span class="arrow">↗</span>
+        <span class="halo"></span>
+        <span class="icon">EN</span>
+        <span class="text">
+          <span class="label">영어 응대 멘트</span>
+          <span class="sub">체크인 · 조식 · 자쿠지</span>
+        </span>
+      </a>
+
+      <a class="card cool" data-key="sales" href="#">
+        <span class="arrow">↗</span>
+        <span class="halo"></span>
+        <span class="icon">₩</span>
+        <span class="text">
+          <span class="label">오픈마감</span>
+          <span class="sub">현금 · 카드 · 서비스 · 순매출</span>
+        </span>
+      </a>
+
+      <a class="card mint" data-key="notice" href="#">
+        <span class="arrow">↗</span>
+        <span class="halo"></span>
+        <span class="icon">!</span>
+        <span class="text">
+          <span class="label">출근시체크</span>
+          <span class="sub">중요 전달사항 모음</span>
+        </span>
+      </a>
+    </section>
+  </main>
+
+  <script>
+    const LINKS = {
+      breakfast: "#",
+      extra: "#",
+      laundry: "#",
+      toyu: "#",
+      checkin: "#",
+      inspection: "#",
+      roomtouch: "#",
+      closing: "#",
+      opening: "#",
+      english: "#",
+      sales: "#",
+      notice: "#"
+    };
+
+    document.querySelectorAll(".card").forEach(card=>{
+      const key = card.dataset.key;
+      if (LINKS[key]) card.href = LINKS[key];
+
+      card.addEventListener("pointerdown", e=>{
+        card.classList.add("touching");
+        const rect = card.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height) * .55;
+
+        const ripple = document.createElement("span");
+        ripple.className = "ripple";
+        ripple.style.width = ripple.style.height = size + "px";
+        ripple.style.left = (e.clientX - rect.left - size/2) + "px";
+        ripple.style.top = (e.clientY - rect.top - size/2) + "px";
+        card.appendChild(ripple);
+        setTimeout(()=>ripple.remove(), 900);
+
+        for(let i=0;i<11;i++){
+          const s = document.createElement("i");
+          s.className = "spark";
+          s.style.left = e.clientX + "px";
+          s.style.top = e.clientY + "px";
+          const a = Math.random() * Math.PI * 2;
+          const d = 26 + Math.random() * 56;
+          s.style.setProperty("--dx", (Math.cos(a) * d) + "px");
+          s.style.setProperty("--dy", (Math.sin(a) * d) + "px");
+          document.body.appendChild(s);
+          setTimeout(()=>s.remove(), 760);
+        }
+      });
+
+      ["pointerup","pointercancel","pointerleave"].forEach(ev=>{
+        card.addEventListener(ev, ()=>setTimeout(()=>card.classList.remove("touching"), 120));
+      });
+    });
+  </script>
+</body>
+</html>
