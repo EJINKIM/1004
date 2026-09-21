@@ -1,153 +1,571 @@
-```html
 <!doctype html>
 <html lang="ko">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Portal</title>
+
   <style>
-    :root{--ink:#302c36;--muted:#817b88;--size:220px;--gap:20px}
+    :root{
+      --ink:#302c36;
+      --muted:#817b88;
+      --size:220px;
+      --gap:20px;
+    }
+
     *{box-sizing:border-box}
+
     html,body{min-height:100%}
-    body{margin:0;font-family:Pretendard,"Noto Sans KR",Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:#fff;}
-    .wrap{min-height:100vh;display:grid;place-items:center;padding:34px 24px 44px}
-    .grid{width:min(1120px,100%);display:flex;flex-wrap:wrap;justify-content:center;gap:var(--gap)}
-    .card{width:var(--size);height:var(--size);flex:0 0 var(--size);border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:28px 24px;text-decoration:none;color:inherit;text-align:center;border:1px solid rgba(120,150,180,.12);box-shadow:0 10px 28px rgba(80,90,120,.08);transition:transform .18s ease,box-shadow .18s ease,background .22s ease;}
-    .card.soft{background:linear-gradient(135deg,#fff1f7 0%,#f5efff 48%,#edf8ff 100%)}
-    .card.cool{background:linear-gradient(135deg,#edf7ff 0%,#f3efff 50%,#effcf8 100%)}
-    .card.mint{background:linear-gradient(135deg,#effcf7 0%,#eef6ff 52%,#fbf0ff 100%)}
-    .card.soft:hover,.card.soft:focus-visible{background:linear-gradient(135deg,#ffe6f1 0%,#efe7ff 48%,#e4f5ff 100%)}
-    .card.cool:hover,.card.cool:focus-visible{background:linear-gradient(135deg,#dff1ff 0%,#ece5ff 50%,#e3f9f1 100%)}
-    .card.mint:hover,.card.mint:focus-visible{background:linear-gradient(135deg,#e2f8ef 0%,#e3f1ff 52%,#f6e7ff 100%)}
-    .card:hover,.card:focus-visible{transform:translateY(-4px);box-shadow:0 14px 32px rgba(80,90,120,.12);outline:none}
-    .card:active{transform:translateY(-1px)}
-    .icon{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;font-size:25px;font-weight:900;background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.94);box-shadow:0 6px 16px rgba(80,90,120,.07);}
-    .text{display:flex;flex-direction:column;align-items:center;gap:6px;width:100%}
-    .label{font-size:18px;line-height:1.22;font-weight:900;letter-spacing:-.045em;word-break:keep-all}
-    .sub{font-size:10.5px;line-height:1.45;color:var(--muted);font-weight:700;max-width:88%;word-break:keep-all}
-    @media(max-width:720px){:root{--size:166px;--gap:12px}.wrap{padding:20px 10px 34px}.card{padding:20px 14px}.label{font-size:15px}.sub{font-size:9px}.icon{width:48px;height:48px;font-size:21px}}
-    @media(max-width:390px){:root{--size:148px;--gap:9px}.label{font-size:13.5px}.sub{font-size:8px}}
-    @media(prefers-reduced-motion:reduce){.card{transition:none}}
+
+    body{
+      margin:0;
+      font-family:Pretendard,"Noto Sans KR",Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      color:var(--ink);
+      background:#fff;
+    }
+
+    .wrap{
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      padding:34px 24px 44px;
+    }
+
+    .grid{
+      width:min(1120px,100%);
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:var(--gap);
+    }
+
+    .card{
+      width:var(--size);
+      height:var(--size);
+      flex:0 0 var(--size);
+      border-radius:50%;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:28px 24px;
+      text-decoration:none;
+      color:inherit;
+      text-align:center;
+      border:1px solid rgba(120,150,180,.12);
+      box-shadow:0 10px 28px rgba(80,90,120,.08);
+      transition:
+        transform .18s ease,
+        box-shadow .18s ease,
+        background .22s ease;
+    }
+
+    .card.soft{
+      background:linear-gradient(
+        135deg,
+        #fff1f7 0%,
+        #f5efff 48%,
+        #edf8ff 100%
+      );
+    }
+
+    .card.cool{
+      background:linear-gradient(
+        135deg,
+        #edf7ff 0%,
+        #f3efff 50%,
+        #effcf8 100%
+      );
+    }
+
+    .card.mint{
+      background:linear-gradient(
+        135deg,
+        #effcf7 0%,
+        #eef6ff 52%,
+        #fbf0ff 100%
+      );
+    }
+
+    .card.soft:hover,
+    .card.soft:focus-visible{
+      background:linear-gradient(
+        135deg,
+        #ffe6f1 0%,
+        #efe7ff 48%,
+        #e4f5ff 100%
+      );
+    }
+
+    .card.cool:hover,
+    .card.cool:focus-visible{
+      background:linear-gradient(
+        135deg,
+        #dff1ff 0%,
+        #ece5ff 50%,
+        #e3f9f1 100%
+      );
+    }
+
+    .card.mint:hover,
+    .card.mint:focus-visible{
+      background:linear-gradient(
+        135deg,
+        #e2f8ef 0%,
+        #e3f1ff 52%,
+        #f6e7ff 100%
+      );
+    }
+
+    .card:hover,
+    .card:focus-visible{
+      transform:translateY(-4px);
+      box-shadow:0 14px 32px rgba(80,90,120,.12);
+      outline:none;
+    }
+
+    .card:active{
+      transform:translateY(-1px);
+    }
+
+    .icon{
+      width:58px;
+      height:58px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      font-size:25px;
+      font-weight:900;
+      background:rgba(255,255,255,.72);
+      border:1px solid rgba(255,255,255,.94);
+      box-shadow:0 6px 16px rgba(80,90,120,.07);
+    }
+
+    .text{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:6px;
+      width:100%;
+    }
+
+    .label{
+      font-size:18px;
+      line-height:1.22;
+      font-weight:900;
+      letter-spacing:-.045em;
+      word-break:keep-all;
+    }
+
+    .sub{
+      font-size:10.5px;
+      line-height:1.45;
+      color:var(--muted);
+      font-weight:700;
+      max-width:88%;
+      word-break:keep-all;
+    }
+
+    @media(max-width:720px){
+      :root{
+        --size:166px;
+        --gap:12px;
+      }
+
+      .wrap{
+        padding:20px 10px 34px;
+      }
+
+      .card{
+        padding:20px 14px;
+      }
+
+      .label{
+        font-size:15px;
+      }
+
+      .sub{
+        font-size:9px;
+      }
+
+      .icon{
+        width:48px;
+        height:48px;
+        font-size:21px;
+      }
+    }
+
+    @media(max-width:390px){
+      :root{
+        --size:148px;
+        --gap:9px;
+      }
+
+      .label{
+        font-size:13.5px;
+      }
+
+      .sub{
+        font-size:8px;
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce){
+      .card{
+        transition:none;
+      }
+    }
   </style>
 </head>
+
 <body>
+
   <main class="wrap">
+
     <section class="grid">
 
-      <a class="card soft" data-key="calendar" href="https://ejinkim.github.io/toyou/">
+      <!-- 일일예약달력 -->
+      <a
+        class="card soft"
+        data-key="calendar"
+        href="https://ejinkim.github.io/toyou/"
+        target="_blank"
+        rel="noopener"
+      >
         <span class="icon">▦</span>
+
         <span class="text">
           <span class="label">일일예약달력</span>
           <span class="sub">예약 · 체크인 · 체크아웃 · 객실 현황</span>
         </span>
       </a>
 
-      <a class="card cool" data-key="breakfast" href="https://ejinkim.github.io/memo1004/">
+
+      <!-- 조식 리딩 -->
+      <a
+        class="card cool"
+        data-key="breakfast"
+        href="https://ejinkim.github.io/memo1004/"
+        target="_blank"
+        rel="noopener"
+      >
         <span class="icon">🍽</span>
+
         <span class="text">
-          <span class="label">조식 리딩<br/>연습하기</span>
+          <span class="label">
+            조식 리딩<br>
+            연습하기
+          </span>
+
           <span class="sub">호실 · 인원 · 메뉴 · 시간</span>
         </span>
       </a>
 
-      <a class="card mint" data-key="extra" href="https://ejinkim.github.io/room1004/">
+
+      <!-- 객실 인추 / 침추 -->
+      <a
+        class="card mint"
+        data-key="extra"
+        href="https://ejinkim.github.io/room1004/"
+        target="_blank"
+        rel="noopener"
+      >
         <span class="icon">＋</span>
+
         <span class="text">
-          <span class="label">객실 인추 · 침추<br/>어메니티</span>
+          <span class="label">
+            객실 인추 · 침추<br>
+            어메니티
+          </span>
+
           <span class="sub">추가 인원 · 침구 · 비품</span>
         </span>
       </a>
 
-      <a class="card soft" data-key="laundry" href="#">
+
+      <!-- 세탁 서비스 -->
+      <a
+        class="card soft"
+        data-key="laundry"
+        href="#"
+      >
         <span class="icon">🫧</span>
+
         <span class="text">
           <span class="label">세탁 서비스</span>
           <span class="sub">접수 · 수거 · 전달</span>
         </span>
       </a>
 
-      <a class="card cool" data-key="toyu" href="#">
+
+      <!-- TOYU 뜻 -->
+      <a
+        class="card cool"
+        data-key="toyu"
+        href="#"
+      >
         <span class="icon">寓</span>
+
         <span class="text">
           <span class="label">TOYU 뜻</span>
           <span class="sub">브랜드 의미</span>
         </span>
       </a>
 
-      <a class="card mint" data-key="checkin" href="#">
+
+      <!-- 체크인 안내 -->
+      <a
+        class="card mint"
+        data-key="checkin"
+        href="#"
+      >
         <span class="icon">⌁</span>
+
         <span class="text">
           <span class="label">체크인 안내</span>
           <span class="sub">레지카드 · 웰컴티 · 시설안내</span>
         </span>
       </a>
 
-      <a class="card soft" data-key="inspection" href="https://ejinkim.github.io/room1004/">
+
+      <!-- 객실 인스펙 -->
+      <a
+        class="card soft"
+        data-key="inspection"
+        href="https://ejinkim.github.io/room1004/"
+        target="_blank"
+        rel="noopener"
+      >
         <span class="icon">✓</span>
+
         <span class="text">
           <span class="label">객실 인스펙</span>
           <span class="sub">완료 객실 · 선순위 · 상태 체크</span>
         </span>
       </a>
 
-      <a class="card cool" data-key="roomtouch" href="https://ejinkim.github.io/roomtouch1004/">
+
+      <!-- 룸터치 -->
+      <a
+        class="card cool"
+        data-key="roomtouch"
+        href="https://ejinkim.github.io/roomtouch1004/"
+        target="_blank"
+        rel="noopener"
+      >
         <span class="icon">✦</span>
+
         <span class="text">
           <span class="label">룸터치, 조식 카톡보고</span>
           <span class="sub">외출 시간 · 청소 · 딜리</span>
         </span>
       </a>
 
-      <a class="card mint" data-key="closing" href="https://ejinkim.github.io/staff1004/">
+
+      <!-- 마감 업무 -->
+      <a
+        class="card mint"
+        data-key="closing"
+        href="https://ejinkim.github.io/staff1004/"
+        target="_blank"
+        rel="noopener"
+      >
         <span class="icon">⌂</span>
+
         <span class="text">
           <span class="label">마감 업무</span>
           <span class="sub">매출 · 객실 · 조식 · 설비</span>
         </span>
       </a>
 
-      <a class="card soft" data-key="opening" href="https://ejinkim.github.io/1004/%EC%B6%9C%EA%B7%BC%EC%8B%9C%20%EB%A3%A8%ED%8B%B4.html">
+
+      <!-- 아침 조식 오픈 -->
+      <a
+        class="card soft"
+        data-key="opening"
+        href="https://ejinkim.github.io/1004/%EC%B6%9C%EA%B7%BC%EC%8B%9C%20%EB%A3%A8%ED%8B%B4.html"
+        target="_blank"
+        rel="noopener"
+      >
         <span class="icon">☼</span>
+
         <span class="text">
-          <span class="label">아침 조식 오픈<br/>업무 루틴</span>
+          <span class="label">
+            아침 조식 오픈<br>
+            업무 루틴
+          </span>
+
           <span class="sub">티 · POS · 음악 · 세팅</span>
         </span>
       </a>
 
-      <a class="card cool" data-key="english" href="#">
+
+      <!-- 영어 응대 -->
+      <a
+        class="card cool"
+        data-key="english"
+        href="#"
+      >
         <span class="icon">EN</span>
+
         <span class="text">
           <span class="label">영어 응대 멘트</span>
           <span class="sub">체크인 · 조식 · 자쿠지</span>
         </span>
       </a>
 
-      <a class="card mint" data-key="sales" href="https://ejinkim.github.io/staff1004/">
+
+      <!-- 오픈마감 -->
+      <a
+        class="card mint"
+        data-key="sales"
+        href="https://ejinkim.github.io/staff1004/"
+        target="_blank"
+        rel="noopener"
+      >
         <span class="icon">₩</span>
+
         <span class="text">
           <span class="label">오픈마감</span>
           <span class="sub">현금 · 카드 · 서비스 · 순매출</span>
         </span>
       </a>
 
-      <a class="card soft" data-key="training" href="https://memo1004.vercel.app/">
+
+      <!-- 직원교육보고 -->
+      <a
+        class="card soft"
+        data-key="training"
+        href="https://memo1004.vercel.app/"
+        target="_blank"
+        rel="noopener"
+      >
         <span class="icon">記</span>
+
         <span class="text">
           <span class="label">은진 직원교육보고 일지</span>
           <span class="sub">교육 · 전달사항 · 업무 기록</span>
         </span>
       </a>
 
-      <a class="card cool" data-key="notice" href="https://ejinkim.github.io/kgeniepop-staff-hub/">
+
+      <!-- 출근시 카톡 -->
+      <a
+        class="card cool"
+        data-key="notice"
+        href="https://ejinkim.github.io/kgeniepop-staff-hub/"
+        target="_blank"
+        rel="noopener"
+      >
         <span class="icon">!</span>
+
         <span class="text">
           <span class="label">출근시 카톡</span>
           <span class="sub">중요 전달사항 모음</span>
         </span>
       </a>
 
+
+
+      <!-- ========================= -->
+      <!-- 새로 추가한 버튼 -->
+      <!-- ========================= -->
+
+
+      <!-- 레스토랑 현금 매출 계산기 -->
+      <a
+        class="card mint"
+        data-key="cash-calculator"
+        href="https://site365.github.io/2ucash/"
+        target="_blank"
+        rel="noopener"
+      >
+        <span class="icon">₩</span>
+
+        <span class="text">
+          <span class="label">
+            레스토랑<br>
+            현금 매출 계산기
+          </span>
+
+          <span class="sub">
+            현금 · 시재금 · 누적현금 · 입금
+          </span>
+        </span>
+      </a>
+
+
+      <!-- 토유 공지노트 -->
+      <a
+        class="card soft"
+        data-key="toyu-note"
+        href="https://ejinkim.github.io/2unote/"
+        target="_blank"
+        rel="noopener"
+      >
+        <span class="icon">N</span>
+
+        <span class="text">
+          <span class="label">
+            토유 공지노트
+          </span>
+
+          <span class="sub">
+            공지 · 전달사항 · 업무 메모
+          </span>
+        </span>
+      </a>
+
+
+      <!-- TL린칸 → 챠트 분석기 -->
+      <a
+        class="card cool"
+        data-key="tl-chart"
+        href="https://site365.github.io/TL2chart/"
+        target="_blank"
+        rel="noopener"
+      >
+        <span class="icon">⌗</span>
+
+        <span class="text">
+          <span class="label">
+            TL린칸 →<br>
+            챠트 분석기
+          </span>
+
+          <span class="sub">
+            예약정보 · 객실정보 · 챠트 변환
+          </span>
+        </span>
+      </a>
+
+
+      <!-- 직원 시간표 -->
+      <a
+        class="card mint"
+        data-key="timetable"
+        href="https://site365.github.io/timetable/"
+        target="_blank"
+        rel="noopener"
+      >
+        <span class="icon">◷</span>
+
+        <span class="text">
+          <span class="label">
+            직원 시간표
+          </span>
+
+          <span class="sub">
+            근무 · 휴무 · 근로시간 · 일정관리
+          </span>
+        </span>
+      </a>
+
+
     </section>
+
   </main>
+
 </body>
 </html>
-```
