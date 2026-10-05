@@ -3,530 +3,994 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#ffffff" />
-<title>TOYU 아침 조식 오픈 업무 루틴</title>
+<meta name="theme-color" content="#eef1f5" />
+<title>오전7시_오픈업무 현황보고</title>
+
 <style>
   :root{
-    --bg:#f6f7f9;
-    --card:#ffffff;
-    --text:#111318;
-    --muted:#6f7682;
-    --line:#e7e9ee;
-    --soft:#f0f2f5;
-    --accent:#111318;
-    --warn:#fff4e5;
-    --danger:#fff0f0;
-    --green:#eef9f0;
-    --shadow:0 8px 24px rgba(17,19,24,.06);
-    --radius:20px;
+    --bg:#f4f5f7;
+    --panel:#ffffff;
+    --text:#181b20;
+    --muted:#747982;
+    --line:#e3e6ea;
+    --soft:#f1f3f5;
+    --shadow:0 12px 28px rgba(28,36,48,.055);
+
+    --pink:#f6e9ee;
+    --blue:#e8f0f7;
+    --yellow:#f5f0df;
+    --mint:#e8f1ec;
+    --lavender:#eeeaf4;
+    --peach:#f4ebe5;
   }
 
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
+
   body{
     margin:0;
-    font-family: Pretendard, "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-    background:var(--bg);
+    background:
+      linear-gradient(180deg,#f7f8fa 0%,#f3f4f6 100%);
     color:var(--text);
-    line-height:1.55;
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",
+      Pretendard,"Noto Sans KR","Segoe UI",sans-serif;
     letter-spacing:-.02em;
   }
-  button,input{font:inherit}
-  .wrap{max-width:980px;margin:0 auto;padding:18px 16px 80px}
 
-  .hero{
-    background:#fff;
-    border:1px solid var(--line);
-    border-radius:24px;
-    padding:22px;
-    box-shadow:var(--shadow);
+  button,input{font:inherit}
+
+  .wrap{
+    max-width:1040px;
+    margin:0 auto;
+    padding:16px 14px 84px;
+  }
+
+  .top{
     position:sticky;
     top:8px;
-    z-index:20;
-    margin-bottom:18px;
+    z-index:30;
+    background:rgba(255,255,255,.92);
+    backdrop-filter:blur(22px);
+    -webkit-backdrop-filter:blur(22px);
+    border:1px solid rgba(255,255,255,.7);
+    border-radius:10px;
+    padding:20px;
+    box-shadow:0 16px 42px rgba(31,41,55,.09);
   }
-  .hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-  .hero h1{margin:0;font-size:clamp(22px,4.8vw,34px);line-height:1.22}
-  .hero p{margin:7px 0 0;color:var(--muted);font-size:14px}
+
+  .top-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:14px;
+  }
+
+  h1{
+    margin:0;
+    font-size:clamp(26px,4vw,38px);
+    line-height:1.1;
+    font-weight:820;
+    letter-spacing:-.04em;
+  }
+
   .reset{
-    border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 12px;
-    font-weight:800;cursor:pointer;white-space:nowrap
+    border:1px solid var(--line);
+    background:#f7f8fa;
+    color:#24282f;
+    border-radius:8px;
+    padding:10px 14px;
+    font-size:13px;
+    font-weight:760;
+    cursor:pointer;
+    white-space:nowrap;
   }
-  .progress-row{display:flex;align-items:center;gap:12px;margin-top:16px}
+
+  .staff{
+    margin-top:18px;
+    display:grid;
+    grid-template-columns:110px 1fr;
+    gap:10px;
+    align-items:center;
+  }
+
+  .staff label{
+    color:var(--muted);
+    font-size:13px;
+    font-weight:760;
+  }
+
+  .staff input{
+    width:100%;
+    border:1px solid var(--line);
+    background:#f9fafb;
+    border-radius:8px;
+    padding:13px 14px;
+    outline:none;
+    font-size:15px;
+    font-weight:650;
+  }
+
+  .staff input:focus{
+    border-color:#aeb6c1;
+    background:#fff;
+    box-shadow:0 0 0 4px rgba(17,24,39,.04);
+  }
+
+  .lock-row{
+    margin-top:10px;
+    display:grid;
+    grid-template-columns:110px 1fr auto;
+    gap:10px;
+    align-items:center;
+  }
+
+  .lock-row label{
+    color:var(--muted);
+    font-size:13px;
+    font-weight:760;
+  }
+
+  .lock-row input{
+    width:100%;
+    border:1px solid var(--line);
+    background:#fffafd;
+    border-radius:8px;
+    padding:12px 14px;
+    outline:none;
+    font-size:14px;
+    letter-spacing:.08em;
+  }
+
+  .lock-row button{
+    border:0;
+    border-radius:8px;
+    padding:11px 14px;
+    background:linear-gradient(135deg,#f8d9e5,#dce9ff);
+    color:#48546a;
+    font-weight:850;
+    cursor:pointer;
+  }
+
+  .lock-row.saved input{
+    background:#f7fbf8;
+    border-color:#d8eadf;
+  }
+
+  .progress-row{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    margin-top:16px;
+  }
+
   .progress{
-    height:12px;background:var(--soft);border-radius:999px;overflow:hidden;flex:1
+    flex:1;
+    height:10px;
+    background:#e8ebef;
+    border-radius:999px;
+    overflow:hidden;
   }
-  .bar{height:100%;width:0%;background:#111318;transition:.2s ease}
-  .pct{font-weight:900;min-width:45px;text-align:right}
-  .quick{
-    display:flex;gap:8px;overflow-x:auto;padding-top:14px;scrollbar-width:none
+
+  .bar{
+    width:0%;
+    height:100%;
+    background:#11161d;
+    border-radius:999px;
+    transition:.2s ease;
   }
-  .quick::-webkit-scrollbar{display:none}
-  .quick a{
-    text-decoration:none;color:var(--text);background:var(--soft);border-radius:999px;
-    padding:8px 12px;font-size:13px;font-weight:800;white-space:nowrap
+
+  .pct{
+    min-width:48px;
+    text-align:right;
+    font-size:14px;
+    font-weight:820;
+  }
+
+  .route{
+    margin-top:14px;
+    display:flex;
+    align-items:center;
+    gap:7px;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+
+  .route::-webkit-scrollbar{display:none}
+
+  .route-chip{
+    flex:0 0 auto;
+    background:#f4f6f8;
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:8px 11px;
+    font-size:11px;
+    font-weight:780;
+    color:#434851;
+    white-space:nowrap;
+  }
+
+  .route-arrow{
+    flex:0 0 auto;
+    color:#a1a7b0;
+    font-size:12px;
   }
 
   .section{
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:20px;
-    margin:14px 0;
-    box-shadow:var(--shadow);
-    scroll-margin-top:170px;
+    margin-top:24px;
   }
+
+  .section-head{
+    text-align:center;
+    margin-bottom:13px;
+  }
+
   .section h2{
-    margin:0 0 14px;
-    font-size:21px;
-    line-height:1.3;
+    margin:0;
+    font-size:18px;
+    font-weight:800;
+    letter-spacing:-.03em;
   }
-  .section h3{
-    margin:18px 0 10px;
-    font-size:16px;
+
+  .section p{
+    margin:5px 0 0;
+    color:var(--muted);
+    font-size:12.5px;
+    line-height:1.5;
   }
-  .section p.note{
-    background:var(--soft);
-    border-radius:14px;
-    padding:12px 14px;
-    margin:10px 0 14px;
+
+  .prep-note{
+    margin:0 auto 12px;
+    max-width:760px;
+    text-align:center;
+    color:#626974;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:-.01em;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:12px;
+  }
+
+  .task{
+    min-height:170px;
+    aspect-ratio:1/1;    border:1px solid #dfe4ea;
+    border-radius:10px;
+    background:var(--pink);
+    box-shadow:var(--shadow);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:18px;
+    cursor:pointer;
+    transition:.18s ease;
+    position:relative;
+    overflow:hidden;
+  }
+
+
+  .task:hover{
+    transform:translateY(-1px);
+    box-shadow:0 14px 32px rgba(20,28,38,.09);
+  }
+
+  .task:active{
+    transform:scale(.975);
+  }
+
+  .task:nth-child(6n+1){background:var(--pink)}
+  .task:nth-child(6n+2){background:var(--blue)}
+  .task:nth-child(6n+3){background:var(--yellow)}
+  .task:nth-child(6n+4){background:var(--mint)}
+  .task:nth-child(6n+5){background:var(--lavender)}
+  .task:nth-child(6n){background:var(--peach)}
+
+  .task-title{
+    font-size:18px;
+    line-height:1.4;
+    font-weight:800;
+    word-break:keep-all;
+    transition:.18s ease;
+  }
+
+  .task-sub{
+    margin-top:9px;
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.5;
+    word-break:keep-all;
+    transition:.18s ease;
+  }
+
+  .task-status{
+    margin-top:15px;
+    padding:7px 11px;
+    border-radius:999px;
+    background:rgba(255,255,255,.78);
+    color:#626872;
+    font-size:11px;
+    font-weight:800;
+    transition:.18s ease;
+  }
+
+  .task.done{
+    border:3px solid #2f7cff;
+    box-shadow:
+      0 0 0 2px rgba(47,124,255,.10),
+      0 10px 24px rgba(40,90,170,.08);
+    cursor:default;
+    background:linear-gradient(180deg,rgba(238,247,255,.98),rgba(244,249,255,.98));
+  }
+
+  .task.done::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:inherit;
+    background:rgba(208,229,255,.18);
+    z-index:1;
+    pointer-events:none;
+  }
+
+  .task.done .task-title,
+  .task.done .task-sub{
+    position:relative;
+    z-index:2;
+    opacity:1;
+    color:#20262f;
+  }
+
+  .task.done .task-title{
+    font-weight:850;
+  }
+
+  .task.done .task-status{
+    position:relative;
+    z-index:3;
+    margin-top:18px;
+    min-width:120px;
+    padding:9px 16px;
+    border-radius:8px;
+    background:#2f7cff;
+    color:#ffffff;
+    font-size:17px;
+    font-weight:900;
+    letter-spacing:-.03em;
+    box-shadow:0 5px 14px rgba(47,124,255,.22);
+  }
+
+  .wide{
+    grid-column:span 2;
+    aspect-ratio:auto;
+    min-height:150px;
+  }
+
+  .full{
+    grid-column:1/-1;
+    aspect-ratio:auto;
+    min-height:150px;
+  }
+
+  .time-card{
+    border-color:#cbd2da;
+  }
+
+
+  .room-status-wrap{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:12px;
+    margin-bottom:12px;
+  }
+
+  .room-status-card{
+    background:rgba(255,255,255,.82);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:14px;
+    box-shadow:0 8px 22px rgba(17,24,39,.04);
+  }
+
+  .room-status-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:10px;
+  }
+
+  .room-status-head strong{
+    font-size:18px;
+    font-weight:850;
+  }
+
+  .room-status-head span{
+    color:var(--muted);
+    font-size:11px;
     font-weight:700;
   }
-  .important{background:var(--danger)}
-  .warm{background:var(--warn)}
-  .green{background:var(--green)}
-  .checks{display:grid;gap:8px}
-  label.item{
-    display:flex;align-items:flex-start;gap:11px;
-    padding:11px 12px;border:1px solid var(--line);border-radius:14px;
-    background:#fff;cursor:pointer;transition:.15s ease;
-  }
-  label.item:hover{background:#fafafa}
-  label.item.done{background:#f1f2f4;color:#838995}
-  label.item.done .txt{text-decoration:line-through}
-  input[type="checkbox"]{
-    width:21px;height:21px;min-width:21px;margin-top:1px;
-    accent-color:#111318;
-  }
-  .txt{font-size:15px}
-  .txt strong{font-weight:900}
-  .sub{
-    margin:12px 0 6px;
-    font-size:13px;font-weight:900;color:#505763;
-    text-transform:none;
-  }
-  .order{
-    border:2px solid #111318;
-    border-radius:16px;
-    padding:13px 14px;
-    font-weight:900;
-    font-size:15px;
-    background:#fff;
-    margin-top:10px;
-  }
-  .final{
-    background:#111318;color:#fff;border:none;
-  }
-  .final .order{
-    border-color:#fff;background:#1a1d22;color:#fff;
-  }
-  .final label.item{
-    background:#171a1f;border-color:#2b2f36;color:#fff;
-  }
-  .final label.item.done{opacity:.55}
-  .mini-grid{
-    display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px
-  }
-  .timebox{
-    border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center;font-weight:900
-  }
-  .floating-top{
-    position:fixed;right:16px;bottom:18px;width:48px;height:48px;border-radius:50%;
-    border:0;background:#111318;color:#fff;font-size:20px;box-shadow:0 10px 28px rgba(0,0,0,.18);
-    cursor:pointer;z-index:30
-  }
-  .footer{color:var(--muted);font-size:12px;text-align:center;margin-top:26px}
 
-  @media (max-width:640px){
-    body{background:#fff}
-    .wrap{padding:10px 10px 70px}
-    .hero{
-      top:4px;border-radius:18px;padding:16px;margin-bottom:10px;
-      box-shadow:0 5px 18px rgba(0,0,0,.07)
+  .room-toggle{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+
+  .room-choice{
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:11px 10px;
+    background:#f8f8fa;
+    color:#555b63;
+    font-weight:800;
+    cursor:pointer;
+  }
+
+  .room-choice.active{
+    background:linear-gradient(135deg,#dcecff,#f0e1ff);
+    color:#404c67;
+    border-color:#d1dbea;
+  }
+
+  .conditional-task.is-disabled{
+    opacity:.38;
+    filter:grayscale(.35);
+    cursor:default;
+    pointer-events:none;
+    box-shadow:none;
+  }
+
+  .conditional-task.is-disabled .task-status{
+    background:rgba(255,255,255,.58);
+    color:#888d94;
+  }
+
+  .note{
+    max-width:760px;
+    margin:14px auto 0;
+    background:rgba(255,255,255,.72);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:13px 15px;
+    text-align:center;
+    color:#555c66;
+    font-size:12.5px;
+    line-height:1.55;
+    box-shadow:0 8px 22px rgba(17,24,39,.04);
+  }
+
+  .footer{
+    text-align:center;
+    color:#9aa0a8;
+    font-size:12px;
+    margin-top:30px;
+  }
+
+  @media(max-width:760px){
+    .grid{
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:10px;
     }
-    .hero-top{align-items:center}
-    .hero p{display:none}
-    .reset{font-size:12px;padding:8px 10px}
-    .progress-row{margin-top:12px}
-    .quick{padding-top:10px}
-    .quick a{padding:7px 10px;font-size:12px}
+
+    .task{
+      min-height:145px;
+      border-radius:12px;
+      padding:15px;
+    }
+
+    .task-title{
+      font-size:18px;
+    }
+
+    .wide{
+      grid-column:span 2;
+    }
+  }
+
+  @media(max-width:520px){
+    .wrap{
+      padding:8px 8px 64px;
+    }
+
+    .top{
+      top:4px;
+      border-radius:10px;
+      padding:15px;
+    }
+
+    h1{
+      font-size:25px;
+    }
+
+    .staff{
+      grid-template-columns:1fr;
+      gap:6px;
+      margin-top:13px;
+    }
+
+    .grid{
+      gap:8px;
+    }
+
+    .room-status-wrap{
+      grid-template-columns:1fr;
+      gap:8px;
+    }
+
+    .task{
+      min-height:132px;
+      border-radius:10px;
+      padding:13px 9px;
+    }
+
+    .task-title{
+      font-size:16px;
+    }
+
+    .task-sub{
+      font-size:11px;
+      margin-top:6px;
+    }
+
+    .task-status{
+      margin-top:11px;
+      font-size:10.5px;
+      padding:6px 8px;
+    }
+
+    .task.done .task-status{
+      font-size:15px;
+      padding:8px 11px;
+      border-radius:7px;
+    }
+
     .section{
-      border-radius:16px;padding:15px;margin:9px 0;box-shadow:none;
-      scroll-margin-top:150px;
+      margin-top:19px;
     }
-    .section h2{font-size:18px;margin-bottom:11px}
-    .section h3{font-size:15px;margin-top:15px}
-    .checks{gap:6px}
-    label.item{padding:9px 10px;border-radius:12px}
-    .txt{font-size:14px}
-    input[type="checkbox"]{width:20px;height:20px;min-width:20px}
-    .mini-grid{grid-template-columns:repeat(3,1fr)}
-    .timebox{padding:10px 4px;font-size:14px}
-    .order{font-size:14px;padding:11px 12px}
+
+    .section h2{
+      font-size:18px;
+    }
   }
 </style>
 </head>
+
 <body>
 <div class="wrap">
 
-  <header class="hero" id="top">
-    <div class="hero-top">
-      <div>
-        <h1>🌅 아침 조식 오픈 업무 루틴</h1>
-        <p>체크한 항목은 이 기기에 자동 저장됨</p>
-      </div>
+  <header class="top">
+    <div class="top-row">
+      <h1>오전7시_오픈업무 현황보고</h1>
       <button class="reset" id="resetBtn">전체 초기화</button>
     </div>
+
+    <div class="staff">
+      <label for="staffName">담당자 / 이름</label>
+      <input id="staffName" type="text" placeholder="이름 입력" autocomplete="name">
+    </div>
+
+    <div class="lock-row">
+      <label for="lockPin">잠금중</label>
+      <input id="lockPin" type="password" inputmode="numeric" maxlength="6" placeholder="4~6자리 숫자">
+      <button type="button" id="savePinBtn">설정</button>
+    </div>
+
     <div class="progress-row">
       <div class="progress"><div class="bar" id="bar"></div></div>
       <div class="pct" id="pct">0%</div>
     </div>
-    <nav class="quick">
-      <a href="#open">건물 오픈</a>
-      <a href="#tea">블렌딩 티</a>
-      <a href="#list">조식 LIST</a>
-      <a href="#stay">연박</a>
-      <a href="#hall">홀</a>
-      <a href="#before">08:00 직전</a>
-      <a href="#guest">고객 입장</a>
-    </nav>
+
+    <div class="route">
+      <div class="route-chip">카톡 객실정비창 · 인스펙창 카톡 보내기</div>
+      <div class="route-arrow">→</div>
+      <div class="route-chip">복도 점검</div>
+      <div class="route-arrow">→</div>
+      <div class="route-chip">4층</div>
+      <div class="route-arrow">→</div>
+      <div class="route-chip">3층</div>
+      <div class="route-arrow">→</div>
+      <div class="route-chip">2층</div>
+      <div class="route-arrow">→</div>
+      <div class="route-chip">지층</div>
+      <div class="route-arrow">→</div>
+      <div class="route-chip">1층 프런트</div>
+      <div class="route-arrow">→</div>
+      <div class="route-chip">조식준비</div>
+    </div>
   </header>
 
-  <section class="section" id="open">
-    <h2>① 건물 오픈</h2>
-    <div class="checks">
-      <label class="item"><input type="checkbox"><span class="txt"><strong>복도부터 지하까지 불 켜기</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>홀 외부 / 홀 내부 / 복도 음악 켜기</strong> — 복도 음악은 <strong>09:00 이후</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>프런트 / 외부 음악 켜기</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>레스토랑 전체 조명 켜기</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>룸스프레이 4층부터 뿌리기</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">시간 남으면 <strong>제습기 3개 확인</strong></span></label>
+  <section class="section">
+    <div class="section-head">
+      <h2>금일 현황 공유</h2>
+      <p>오픈 업무 현황을 공유</p>
+    </div>
+
+    <div class="prep-note">이동 전 업무폰과 룸스프레이 챙기기.</div>
+
+    <div class="grid">
+      <button class="task" data-id="send-room-cleaning">
+        <div class="task-title">객실정비창에<br>금일 현황 카톡 보내기</div>
+        <div class="task-status">대기중</div>
+      </button>
+
+      <button class="task" data-id="send-inspection">
+        <div class="task-title">인스펙창에<br>금일 현황 카톡 보내기</div>
+        <div class="task-status">대기중</div>
+      </button>
     </div>
   </section>
 
   <section class="section">
-    <h2>🍵 ② 식당 기본 준비</h2>
-    <div class="checks">
-      <label class="item"><input type="checkbox"><span class="txt"><strong>블렌딩 티 만들기</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>얼음물 만들기</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>뜨거운 물 가열 시작 — 2곳</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">물병 / 물 세팅 확인</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">찻잔 준비</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">카트 준비</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">배터리 준비 및 연결</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">주방 POS 켜기</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">카운터 POS 켜기</span></label>
-    </div>
-  </section>
-
-  <section class="section" id="tea">
-    <h2>🍵 블렌딩 티 만드는 법</h2>
-    <h3>① 티 우리기</h3>
-    <div class="checks">
-      <label class="item"><input type="checkbox"><span class="txt">주전자에 <strong>티백 1개 넣기</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">기본은 <strong>티백 1개</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">조식 인원 <strong>20명 초과 시 상황에 따라 티백 2개 사용</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">정수기에서 <strong>정수</strong> 누르기</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">용량 <strong>1,500ml</strong> 선택해서 물 받기</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">주전자 <strong>POWER 켜기</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">주전자 올리기</span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>기능 → 시작</strong> 누르기</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">타이머 <strong>30분</strong> 맞추기</span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>30분 동안 충분히 우리기</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">다 우러나면 <strong>검정색 주전자 3곳에 나누어 옮겨 담기</strong></span></label>
+    <div class="section-head">
+      <h2>복도 점검</h2>
+      <p>4층부터 3층, 2층 순 점검 현황.</p>
     </div>
 
-    <h3>💻 POS 켜기</h3>
-    <div class="checks">
-      <label class="item"><input type="checkbox"><span class="txt">컴퓨터 켜기</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">비밀번호 <strong>000</strong> 입력</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">POS 프로그램 정상 작동 확인</span></label>
+    <div class="grid">
+      <button class="task full" data-id="corridor-ventilation">
+        <div class="task-title">복도 환기</div>
+        <div class="task-sub">복도창 열기 → 블라인드 각도 사선으로 조정 → 통풍되도록 살짝 열어두기</div>
+        <div class="task-status">대기중</div>
+      </button>
+
+      <button class="task" data-id="spray-4">
+        <div class="task-title">4층 복도 불켜기<br>+ 룸스프레이 분사</div>
+        <div class="task-status">대기중</div>
+      </button>
+
+      <button class="task" data-id="spray-3">
+        <div class="task-title">3층 복도 불켜기<br>+ 룸스프레이 분사</div>
+        <div class="task-status">대기중</div>
+      </button>
+
+      <button class="task" data-id="spray-2">
+        <div class="task-title">2층 복도 불켜기<br>+ 룸스프레이 분사</div>
+        <div class="task-status">대기중</div>
+      </button>
+
+      <button class="task wide" data-id="put-water-bedding">
+        <div class="task-title">복도 고객용 생수선반<br>+ 침구 → 창고에 넣기</div>
+        <div class="task-status">대기중</div>
+      </button>
     </div>
   </section>
 
   <section class="section">
-    <h2>☕ ③ 아침 조식 오픈 세팅</h2>
-    <h3>찻잔 세팅</h3>
-    <div class="checks">
-      <label class="item"><input type="checkbox"><span class="txt">찻잔 전부 <strong>뒤집어서 세팅하기</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">찻잔 돌려 준비하기</span></label>
+    <div class="section-head">
+      <h2>지층 점검</h2>
+      <p>지층 점검 현황.</p>
     </div>
 
-    <h3>카트 세팅</h3>
-    <div class="checks">
-      <label class="item"><input type="checkbox"><span class="txt"><strong>배터리</strong> 카트에 싣기</span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>차가운 물 주전자</strong> 카트에 싣기</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">필요한 곳에 배터리 <strong>전부 꽂기</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">기기 <strong>하나씩 전부 켜기</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">카트와 물주전자 위치 확인</span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>샐러드 준비 및 수량 맞추기</strong></span></label>
-    </div>
-  </section>
+    <div class="grid">
+      <button class="task" data-id="basement-door">
+        <div class="task-title">지층 창고문<br>살짝 열어두기</div>
+        <div class="task-status">대기중</div>
+      </button>
 
-  <section class="section" id="list">
-    <h2>📋 ④ 조식 LIST 수량 확인</h2>
-    <div class="checks">
-      <label class="item"><input type="checkbox"><span class="txt">오늘 <strong>총 조식 인원</strong> 확인</span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>성인 수</strong> 확인</span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>어린이 수</strong> 확인</span></label>
-    </div>
-
-    <h3>메뉴별 수량 확인</h3>
-    <div class="checks">
-      <label class="item"><input type="checkbox"><span class="txt"><strong>톳밥 수량 확인</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">톳밥 수량에 맞춰 <strong>동치미 푸기</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>전복죽 수량 확인</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">필요한 <strong>반찬 수량만큼 미리 퍼놓기</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>어린이 메뉴 수량 확인</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>수프 수량 확인</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">수프 수량에 맞춰 <strong>접시 준비</strong></span></label>
-    </div>
-
-    <h3>객실별 조식시간 확인</h3>
-    <div class="mini-grid">
-      <div class="timebox">08:00</div>
-      <div class="timebox">08:30</div>
-      <div class="timebox">09:00</div>
+      <button class="task" data-id="basement-light">
+        <div class="task-title">지층 창고<br>조명 켜기</div>
+        <div class="task-status">대기중</div>
+      </button>
     </div>
   </section>
 
   <section class="section">
-    <h2>🥗 ⑤ 샐러드 준비</h2>
-    <div class="checks">
-      <label class="item"><input type="checkbox"><span class="txt"><strong>성인 조식 인원수만큼 샐러드 준비</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">샐러드 소스 담기</span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>톳밥 소스 담기</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>정사각 트레이 확인</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">토마토 등 샐러드 구성 확인</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">완성된 샐러드는 <strong>냉장 보관</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">어린이는 샐러드 대신 <strong>수프 대상인지 확인</strong></span></label>
+    <div class="section-head">
+      <h2>101호 / 102호 제습기 점검</h2>
+      <p>각 객실 공실 여부 선택 후 해당 점검 항목 활성화.</p>
+    </div>
+
+    <div class="room-status-wrap">
+      <div class="room-status-card" data-room="101">
+        <div class="room-status-head">
+          <strong>101호</strong>
+          <span>공실 여부 선택</span>
+        </div>
+        <div class="room-toggle">
+          <button type="button" class="room-choice" data-room="101" data-state="occupied">공실 X</button>
+          <button type="button" class="room-choice" data-room="101" data-state="vacant">공실 O</button>
+        </div>
+      </div>
+
+      <div class="room-status-card" data-room="102">
+        <div class="room-status-head">
+          <strong>102호</strong>
+          <span>공실 여부 선택</span>
+        </div>
+        <div class="room-toggle">
+          <button type="button" class="room-choice" data-room="102" data-state="occupied">공실 X</button>
+          <button type="button" class="room-choice" data-room="102" data-state="vacant">공실 O</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid conditional-grid">
+      <button class="task conditional-task is-disabled" data-id="101-backoffice" data-room-target="101" data-when="occupied">
+        <div class="task-title">101호 백오피스<br>제습기 가동</div>
+        <div class="task-sub">공실 X 선택 시 활성화</div>
+        <div class="task-status">대기</div>
+      </button>
+
+      <button class="task conditional-task is-disabled" data-id="101-mobile-dehum" data-room-target="101" data-when="vacant">
+        <div class="task-title">101호 실내 이동식 제습기<br>물양 점검 및 비우기</div>
+        <div class="task-sub">점검 전 사진 인증 → 물 비우기 → 완료 사진 인증</div>
+        <div class="task-status">대기</div>
+      </button>
+
+      <button class="task conditional-task is-disabled" data-id="102-backoffice" data-room-target="102" data-when="occupied">
+        <div class="task-title">102호 백오피스<br>제습기 가동</div>
+        <div class="task-sub">공실 X 선택 시 활성화</div>
+        <div class="task-status">대기</div>
+      </button>
+
+      <button class="task conditional-task is-disabled" data-id="102-mobile-dehum" data-room-target="102" data-when="vacant">
+        <div class="task-title">102호 실내 이동식 제습기<br>물양 점검 및 비우기</div>
+        <div class="task-sub">점검 전 사진 인증 → 물 비우기 → 완료 사진 인증</div>
+        <div class="task-status">대기</div>
+      </button>
     </div>
   </section>
 
   <section class="section">
-    <h2>💻 ⑥ POS / 주방 기계 켜기</h2>
-    <div class="checks">
-      <label class="item"><input type="checkbox"><span class="txt"><strong>주방 POS 켜기</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>카운터 POS 켜기</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">테이블오더 정상 작동 확인</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">필요한 태블릿 상태 확인</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">태블릿 배터리 연결 확인</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">기기 하나씩 전부 켜기</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">주방으로 주문이 정상적으로 전달되는지 확인</span></label>
-    </div>
-  </section>
-
-  <section class="section" id="stay">
-    <h2>🧹 ⑦ 연박 객실 먼저 잡기 — 중요</h2>
-    <p class="note important">오늘 조식 먹으러 오는 <strong>연박 고객은 룸터치 여부를 반드시 물어봐야 하는 고객</strong>임.</p>
-    <div class="checks">
-      <label class="item"><input type="checkbox"><span class="txt">오늘 <strong>연박 객실 호실 전부 확인</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">조식 차트에서 연박 객실에 <strong>R 표시 확인</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">연박 고객별 <strong>조식시간 확인</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">해당 객실 <strong>메모 확인</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">메모 있는 객실은 놓치지 않도록 체크</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">기존 <strong>룸터치 관련 요청사항</strong> 있는지 확인</span></label>
+    <div class="section-head">
+      <h2>1층 프런트 준비</h2>
+      <p>1층 프런트 준비 현황.</p>
     </div>
 
-    <h3>조식 중 반드시 확인할 것</h3>
-    <div class="checks">
-      <label class="item"><input type="checkbox"><span class="txt">오늘 <strong>객실 청소(룸터치)를 원하는지 확인</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">오늘 <strong>외출 예정인지 확인</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">대략 <strong>몇 시에 외출하는지 확인</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">대략 <strong>몇 시에 돌아오는지 확인</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">청소가 필요 없는 경우 <strong>룸터치 미진행</strong>으로 기록</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">받은 내용은 <strong>해당 호실 메모에 즉시 기록</strong></span></label>
+    <div class="grid">
+      <button class="task" data-id="front-ice-water">
+        <div class="task-title">프론트<br>얼음물 준비</div>
+        <div class="task-status">대기중</div>
+      </button>
+
+      <button class="task" data-id="front-hot-water">
+        <div class="task-title">프론트<br>뜨거운물 준비</div>
+        <div class="task-status">대기중</div>
+      </button>
+
+      <button class="task" data-id="outside-music">
+        <div class="task-title">외부 음악 켜기</div>
+        <div class="task-status">대기중</div>
+      </button>
+
+      <button class="task time-card" data-id="corridor-music-850">
+        <div class="task-title">08:50<br>복도 음악 켜기</div>
+        <div class="task-status">대기중</div>
+      </button>
     </div>
   </section>
 
   <section class="section">
-    <h2>📱 ⑧ 객실정비 관련 카톡 올리기</h2>
-    <div class="checks">
-      <label class="item"><input type="checkbox"><span class="txt">오늘 <strong>연박 객실 정리</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">객실정비 관련 기존 톡 확인</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">필요한 <strong>연박 / 룸터치 관련 내용 카톡에 공유</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">청소팀이 알아야 할 <strong>객실 특이사항 확인</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>추가 인원</strong> 관련 내용 확인</span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>추가 침구</strong> 관련 내용 확인</span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>추가 어메니티</strong> 관련 내용 확인</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">필요한 내용이 있으면 함께 공유</span></label>
+    <div class="section-head">
+      <h2>조식 준비</h2>
+      <p>조식 준비 현황.</p>
+    </div>
+
+    <div class="grid">
+      <button class="task" data-id="blending-tea">
+        <div class="task-title">블렌딩티 만들기</div>
+        <div class="task-status">대기중</div>
+      </button>
+
+      <button class="task" data-id="counter-pos">
+        <div class="task-title">카운터 POS ON</div>
+        <div class="task-status">대기중</div>
+      </button>
+
+      <button class="task" data-id="cups">
+        <div class="task-title">찻잔 뒤집기</div>
+        <div class="task-status">대기중</div>
+      </button>
+
+      <button class="task" data-id="water-battery">
+        <div class="task-title">물주전자 배치<br>및 배터리 연결</div>
+        <div class="task-status">대기중</div>
+      </button>
+
+      <button class="task" data-id="kitchen-pos">
+        <div class="task-title">주방 POS ON</div>
+        <div class="task-status">대기중</div>
+      </button>
+
+      <button class="task" data-id="all-devices">
+        <div class="task-title">기기 전체 ON</div>
+        <div class="task-status">대기중</div>
+      </button>
+
+      <button class="task" data-id="breakfast-plating">
+        <div class="task-title">조식 플레이팅 준비</div>
+        <div class="task-status">대기중</div>
+      </button>
+
+      <button class="task" data-id="restroom-lights">
+        <div class="task-title">화장실(남자·여자)<br>불 켜기</div>
+        <div class="task-status">대기중</div>
+      </button>
+
+
+
     </div>
   </section>
 
-  <section class="section" id="hall">
-    <h2>🍽️ ⑨ 홀 오픈 세팅</h2>
-    <div class="checks">
-      <label class="item"><input type="checkbox"><span class="txt">테이블 상태 확인</span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>테이블 닦기</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">의자 상태 확인</span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>의자 닦기</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>레스토랑 창틀 닦기</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">컵 세팅</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">컵 / 찻잔은 필요한 방식대로 <strong>뒤집어서 세팅</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">물 세팅</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">차가운 물 주전자 세팅</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">테이블별 기본 세팅 확인</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">휴지 / 냅킨 등 부족한 것 채우기</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">고객 동선에 방해되는 물건 없는지 확인</span></label>
-    </div>
-  </section>
 
-  <section class="section">
-    <h2>🪑 ⑩ 오늘 조식 좌석 및 고객정보 머릿속에 넣기</h2>
-    <p class="note warm">조식 시작 전에 최소한 아래 내용은 알고 있어야 함.</p>
-    <div class="checks">
-      <label class="item"><input type="checkbox"><span class="txt"><strong>몇 호실이 오는지</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>몇 명인지</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>몇 시인지</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>무슨 메뉴인지</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>연박인지</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>룸터치를 물어봐야 하는 고객인지</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>메모가 있는 객실인지</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>현장 결제 관련 내용이 있는지</strong></span></label>
-    </div>
-    <div class="order">호실 → 예약자 → 박수 → 인원 → 조식 사용일 → 시간 → 메뉴 → 메모</div>
-  </section>
 
-  <section class="section" id="before">
-    <h2>⏰ ⑪ 08:00 조식 시작 직전 최종 확인</h2>
-    <div class="checks">
-      <label class="item"><input type="checkbox"><span class="txt">첫 타임 <strong>08:00 객실 확인</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">해당 객실 <strong>테이블 자리 확인</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">메뉴 수량 재확인</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">샐러드 준비 확인</span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>블렌딩 티 준비 확인</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>뜨거운 물 2곳 준비 확인</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>얼음물 준비 확인</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">주방과 첫 주문 수량 확인</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">연박 고객 <strong>R 표시 다시 확인</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">특이사항 있는 고객 확인</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">메모 있는 고객 확인</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">현장 결제 여부 확인</span></label>
-    </div>
-  </section>
-
-  <section class="section" id="guest">
-    <h2>🍵 고객 들어오면</h2>
-    <h3>1. 객실 확인</h3>
-    <div class="checks">
-      <label class="item"><input type="checkbox"><span class="txt">인사</span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>호실 확인</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">예약 인원과 실제 인원 확인</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">자리 안내</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">특이사항이 있으면 <strong>즉시 메모</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>현장 결제 여부 잘 메모해두기</strong></span></label>
-    </div>
-
-    <h3>2. 고객 착석 후</h3>
-    <div class="checks">
-      <label class="item"><input type="checkbox"><span class="txt"><strong>샐러드 바로 제공</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>시그니처 블렌딩 티 제공</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">곧 식사가 준비된다고 안내</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">필요한 물 / 컵 상태 확인</span></label>
-    </div>
-
-    <h3>🚨 3. 연박 고객이면</h3>
-    <p class="note important"><strong>R 표시된 객실인지 확인하고 룸터치 질문 절대 잊지 않기.</strong></p>
-    <div class="checks">
-      <label class="item"><input type="checkbox"><span class="txt">룸터치 희망 여부</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">외출 여부</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">외출 예정 시간</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">복귀 예상 시간</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">청소가 필요 없는 경우 <strong>룸터치 미진행 확인</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">답변 <strong>즉시 해당 호실 메모에 기록</strong></span></label>
-    </div>
-  </section>
-
-  <section class="section">
-    <h2>✅ 아침 오픈 때 반드시 켜거나 준비할 것 최종 체크</h2>
-    <div class="checks">
-      <label class="item"><input type="checkbox"><span class="txt"><strong>얼음물</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>뜨거운 물 2곳</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>블렌딩 티</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">찻잔 전부 뒤집어 세팅</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">카트 준비</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">배터리 전부 연결</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">차가운 물 주전자 세팅</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">기기 하나씩 전부 켜기</span></label>
-      <label class="item"><input type="checkbox"><span class="txt">샐러드 수량 맞추기</span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>주방 POS ON</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>카운터 POS ON</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">컴퓨터 ON → 비밀번호 <strong>000</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>홀 조명 ON</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>복도 조명 ON</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>지하까지 조명 ON</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>홀 내부 음악 ON</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>홀 외부 음악 ON</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>프런트 음악 ON</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>외부 음악 ON</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>복도 음악 ON — 09:00 이후</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt"><strong>룸스프레이 4층부터</strong></span></label>
-      <label class="item"><input type="checkbox"><span class="txt">시간 남으면 <strong>제습기 3개 확인</strong></span></label>
-    </div>
-  </section>
-
-  <section class="section final">
-    <h2>🔥 조식 시작 전에 절대 놓치면 안 되는 핵심</h2>
-    <div class="order">조식 수량 → 샐러드 → 티 → 물 → POS → 좌석 → 연박 R → 메모 → 룸터치</div>
-    <p><strong>특히 연박 고객 = 조식 중 룸터치 확인 대상</strong>으로 기억하기.</p>
-    <div class="order">호실 → 예약자 → 박수 → 인원 → 사용일 → 시간 → 메뉴 → 메모</div>
-    <p><strong>고객이 들어오면:</strong></p>
-    <div class="order">호실 확인 → 자리 안내 → 샐러드 → 블렌딩 티 → 연박이면 룸터치 확인 → 특이사항/현장결제 즉시 메모</div>
-  </section>
-
-  <div class="footer">TOYU Breakfast Opening Routine</div>
+  <div class="footer">TOYU Morning Opening Operations</div>
 </div>
 
-<button class="floating-top" aria-label="맨 위로" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
-
 <script>
-  const boxes = [...document.querySelectorAll('input[type="checkbox"]')];
-  const KEY = 'toyu_breakfast_open_v1';
+  const TASK_KEY = 'toyu_breakfast_route_v8';
+  const STAFF_KEY = 'toyu_breakfast_staff_v5';
+  const ROOM_STATE_KEY = 'toyu_breakfast_room_state_v2';
+  const PIN_KEY = 'toyu_breakfast_admin_pin_v1';
 
-  function save(){
-    const states = boxes.map(b => b.checked);
-    localStorage.setItem(KEY, JSON.stringify(states));
-    render();
-  }
+  const tasks = [...document.querySelectorAll('.task')];
+  const staffInput = document.getElementById('staffName');
+  const roomChoices = [...document.querySelectorAll('.room-choice')];
+  const lockPin = document.getElementById('lockPin');
+  const savePinBtn = document.getElementById('savePinBtn');
+  const lockRow = document.querySelector('.lock-row');
+  let roomStates = {101:null,102:null};
 
-  function load(){
-    try{
-      const states = JSON.parse(localStorage.getItem(KEY) || '[]');
-      boxes.forEach((b,i)=> b.checked = !!states[i]);
-    }catch(e){}
-    render();
+  function isTaskEnabled(task){
+    if(!task.classList.contains('conditional-task')) return true;
+    return !task.classList.contains('is-disabled');
   }
 
   function render(){
-    boxes.forEach(b => b.closest('.item')?.classList.toggle('done', b.checked));
-    const done = boxes.filter(b => b.checked).length;
-    const pct = boxes.length ? Math.round(done / boxes.length * 100) : 0;
+    const activeTasks = tasks.filter(isTaskEnabled);
+    const doneCount = activeTasks.filter(task => task.classList.contains('done')).length;
+    const pct = activeTasks.length ? Math.round(doneCount / activeTasks.length * 100) : 0;
+
     document.getElementById('bar').style.width = pct + '%';
     document.getElementById('pct').textContent = pct + '%';
+
+    tasks.forEach(task => {
+      const status = task.querySelector('.task-status');
+      if(!status) return;
+      if(task.classList.contains('is-disabled')){
+        status.textContent = '대기';
+      }else{
+        status.textContent = task.classList.contains('done') ? '완료됨' : '대기중';
+      }
+    });
   }
 
-  boxes.forEach(b => b.addEventListener('change', save));
+  function saveTasks(){
+    const state = {};
+    tasks.forEach(task => state[task.dataset.id] = task.classList.contains('done'));
+    localStorage.setItem(TASK_KEY, JSON.stringify(state));
+  }
 
-  document.getElementById('resetBtn').addEventListener('click', ()=>{
-    if(confirm('오늘 체크한 내용을 전부 초기화할까요?')){
-      boxes.forEach(b => b.checked = false);
-      localStorage.removeItem(KEY);
+  function loadTasks(){
+    try{
+      const state = JSON.parse(localStorage.getItem(TASK_KEY) || '{}');
+      tasks.forEach(task => task.classList.toggle('done', !!state[task.dataset.id]));
+    }catch(e){}
+  }
+
+  function applyRoomState(room){
+    const state = roomStates[room];
+
+    roomChoices
+      .filter(btn => btn.dataset.room === room)
+      .forEach(btn => btn.classList.toggle('active', btn.dataset.state === state));
+
+    document.querySelectorAll(`[data-room-target="${room}"]`).forEach(task => {
+      const shouldEnable = task.dataset.when === state;
+      task.classList.toggle('is-disabled', !shouldEnable);
+      if(!shouldEnable) task.classList.remove('done');
+    });
+
+    saveTasks();
+    localStorage.setItem(ROOM_STATE_KEY, JSON.stringify(roomStates));
+    render();
+  }
+
+  function verifyPin(message){
+    const pin = localStorage.getItem(PIN_KEY);
+    if(!pin) return true;
+    const entered = prompt(message);
+    if(entered !== pin){
+      alert('잠금코드가 일치하지 않습니다.');
+      return false;
+    }
+    return true;
+  }
+
+  roomChoices.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const room = btn.dataset.room;
+      const current = roomStates[room];
+
+      if(current && current !== btn.dataset.state){
+        if(!verifyPin(`${room}호 상태를 변경하려면 잠금번호를 입력하세요.`)) return;
+      }
+
+      roomStates[room] = btn.dataset.state;
+      applyRoomState(room);
+    });
+  });
+
+  tasks.forEach(task => {
+    task.addEventListener('click', () => {
+      if(!isTaskEnabled(task)) return;
+
+      // 완료한 항목은 개별 해제 불가
+      if(task.classList.contains('done')) return;
+
+      task.classList.add('done');
+      saveTasks();
+      render();
+    });
+  });
+
+  staffInput.value = localStorage.getItem(STAFF_KEY) || '';
+  staffInput.addEventListener('input', () => {
+    localStorage.setItem(STAFF_KEY, staffInput.value);
+  });
+
+  const savedPin = localStorage.getItem(PIN_KEY);
+  if(savedPin){
+    lockRow.classList.add('saved');
+    lockPin.placeholder = '잠금코드 설정됨';
+  }
+
+  savePinBtn.addEventListener('click', () => {
+    const pin = lockPin.value.trim();
+
+    if(!/^\d{4,6}$/.test(pin)){
+      alert('잠금번호는 숫자 4~6자리로 입력해주세요.');
+      return;
+    }
+
+    const existing = localStorage.getItem(PIN_KEY);
+    if(existing && existing !== pin){
+      const current = prompt('기존 잠금코드를 입력하세요.');
+      if(current !== existing){
+        alert('기존 잠금코드가 일치하지 않습니다.');
+        return;
+      }
+    }
+
+    localStorage.setItem(PIN_KEY, pin);
+    lockPin.value = '';
+    lockPin.placeholder = '잠금코드 설정됨';
+    lockRow.classList.add('saved');
+    alert('잠금번호가 저장되었습니다.');
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if(!verifyPin('전체 초기화를 하려면 잠금번호를 입력하세요.')) return;
+
+    if(confirm('오늘 완료한 항목을 전부 초기화할까요?')){
+      tasks.forEach(task => task.classList.remove('done'));
+      roomStates = {101:null,102:null};
+      roomChoices.forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.conditional-task').forEach(task => task.classList.add('is-disabled'));
+
+      localStorage.removeItem(TASK_KEY);
+      localStorage.removeItem(ROOM_STATE_KEY);
       render();
       window.scrollTo({top:0,behavior:'smooth'});
     }
   });
 
-  load();
+  loadTasks();
+
+  try{
+    roomStates = JSON.parse(localStorage.getItem(ROOM_STATE_KEY) || '{"101":null,"102":null}');
+  }catch(e){
+    roomStates = {101:null,102:null};
+  }
+
+  applyRoomState('101');
+  applyRoomState('102');
+  render();
 </script>
+
 </body>
 </html>
